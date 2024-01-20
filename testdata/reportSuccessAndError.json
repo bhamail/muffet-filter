@@ -1,0 +1,295 @@
+[
+  {
+    "url": "https://help.sonatype.com/index.html",
+    "links": [
+      {
+        "url": "https://help.sonatype.com/css/sm-simple.css",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/html5-2-portal.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/bootstrap.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/styles/googlecode.min.css",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/cookie-consent.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/jquery-3/jquery-3.4.1.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.css",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/sonatype-sunsetting-information.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/product-information-for-iq-server.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/jquery.smartmenus.js",
+        "status": 200
+      },
+      {
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/cookieconsent/3.1.1/cookieconsent.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/installing-iq-server.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/repository-audit.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/planning-your-implementation.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/using-nexus-repository.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/lifecycle-cloud.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/roboto.font.css",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/nexus-repository-best-practices.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/managing-the-quarantine.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/automating.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/important-announcements.html",
+        "status": 200
+      },
+      {
+        "url": "https://my.sonatype.com",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/sonatype-product-overview.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/namespace-confusion-protection.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/reporting.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/html5-2.js?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/best-practices.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/657a24342b474.css",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/integrations.html",
+        "status": 200
+      },
+      {
+        "url": "https://polyfill.io/v3/polyfill.min.js?features=default%2CArray.prototype.find%2CArray.prototype.includes%2CPromise%2CObject.assign%2CObject.entries",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/theme1.css?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/getting-started.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/jquery.mark.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/reference--glossary.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/next-gen-firewall-features.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/search.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/repository-manager-2.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/analysis.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/jquery-migrate-3.4.1.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.2/highlight.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/image/portal-logo.png",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/sm-core-css.css",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/content-theme2.css?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/getting-started-with-repository-firewall.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/product-preview-program.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/nexus-repository-administration.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/html5.algoliasearch.js?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/installation-and-upgrades.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/materialize.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/getting-started-on-the-cloud.html",
+        "status": 200
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/autocomplete.js/0/autocomplete.jquery.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/layout-custom-script.js?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/sonatype-nexus-repository.html",
+        "status": 200
+      },
+      {
+        "url": "https://cdn.jsdelivr.net/algoliasearch/3/algoliasearch.min.js",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/managing.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/theme1-colors.css?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/configuring.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/lifecycle-best-practices.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/html5.algoliasearch.css?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/index.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/repository-firewall.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/favicon.ico",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/js/html5-2-mp-common.js?version=20240119",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/css/font-awesome.css",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/lifecycle-integrations.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/product-information.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/sonatype-lifecycle.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/quickstart-guides.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/en/firewall-apis.html",
+        "status": 200
+      },
+      {
+        "url": "https://help.sonatype.com/index.html#content-wrapper",
+        "error": "id #content-wrapper not found"
+      }
+    ]
+  }
+]

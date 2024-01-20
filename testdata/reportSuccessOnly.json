@@ -1,0 +1,115 @@
+[
+  {
+    "url": "https://www.google.com/",
+    "links": [
+      {
+        "url": "https://www.google.com/images/branding/googlelogo/1x/googlelogo_white_background_color_272x92dp.png",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/intl/en/policies/privacy/",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/imghp?hl=en&tab=wi",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/advanced_search?hl=en&authuser=0",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/preferences?hl=en",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/intl/en/policies/terms/",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/webhp?tab=ww",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/services/",
+        "status": 200
+      },
+      {
+        "url": "https://translate.google.com/?hl=en&tab=wT",
+        "status": 200
+      },
+      {
+        "url": "http://www.google.com/preferences?hl=en",
+        "status": 200
+      },
+      {
+        "url": "https://photos.google.com/?tab=wq&pageId=none",
+        "status": 200
+      },
+      {
+        "url": "https://www.youtube.com/?tab=w1",
+        "status": 200
+      },
+      {
+        "url": "https://books.google.com/?hl=en&tab=wp",
+        "status": 200
+      },
+      {
+        "url": "http://www.google.com/history/optout?hl=en",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/intl/en/ads/",
+        "status": 200
+      },
+      {
+        "url": "https://docs.google.com/document/?usp=docs_alc",
+        "status": 200
+      },
+      {
+        "url": "https://maps.google.com/maps?hl=en&tab=wl",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/intl/en/about.html",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/intl/en/about/products?tab=wh",
+        "status": 200
+      },
+      {
+        "url": "https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/&ec=GAZAAQ",
+        "status": 200
+      },
+      {
+        "url": "https://drive.google.com/?tab=wo",
+        "status": 200
+      },
+      {
+        "url": "https://www.google.com/finance?tab=we",
+        "status": 200
+      },
+      {
+        "url": "https://mail.google.com/mail/?tab=wm",
+        "status": 200
+      },
+      {
+        "url": "https://www.blogger.com/?tab=wj",
+        "status": 200
+      },
+      {
+        "url": "https://news.google.com/?tab=wn",
+        "status": 200
+      },
+      {
+        "url": "https://calendar.google.com/calendar?tab=wc",
+        "status": 200
+      },
+      {
+        "url": "https://play.google.com/?hl=en&tab=w8",
+        "status": 200
+      }
+    ]
+  }
+]

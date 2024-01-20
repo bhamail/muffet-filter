@@ -1,0 +1,9 @@
+Usage:
+  muffet-filter.test [options] <url>
+
+Application Options:
+  -j, --input-json= Path to muffet link check output file in json format
+  -v, --verbose     Show more output
+  -h, --help        Show this help
+      --version     Show version
+
