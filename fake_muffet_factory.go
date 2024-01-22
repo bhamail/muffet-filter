@@ -9,5 +9,13 @@ func newFakeMuffetFactory(message string, err error) *fakeMuffetFactory {
 	return &fakeMuffetFactory{response: resp}
 }
 func (f *fakeMuffetFactory) Create(options muffetOptions) muffetExecutor {
-	return f.Create(options)
+	return &fakeMuffetExecutor{options}
+}
+
+type fakeMuffetExecutor struct {
+	options muffetOptions
+}
+
+func (r *fakeMuffetExecutor) Check() (string, error) {
+	return "[]", nil
 }

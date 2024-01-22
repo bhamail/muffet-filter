@@ -19,8 +19,7 @@ func newRealMuffetFactory() *realMuffetFactory {
 }
 
 func (f *realMuffetFactory) Create(options muffetOptions) muffetExecutor {
-	muffetExec := realMuffetExecutor{options}
-	return &muffetExec
+	return &realMuffetExecutor{options}
 }
 
 type realMuffetExecutor struct {
