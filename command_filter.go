@@ -38,15 +38,30 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 		return true, nil
 	}
 
-	ok := true
-
 	// call muffet to generate json response
+	options := muffetOptions{arguments: defaultOptions}
+	options.arguments = append(options.arguments, args.URL)
+	muffetExec := c.factory.Create(options)
+	jsonReport, err := muffetExec.Check()
+	if err != nil {
+		return false, err
+	}
 
 	// read json file into struct
+	parseReport := parseResponse{jsonReport}
+	report, err := parseReport.loadReport()
+	if err != nil {
+		return false, err
+	}
 
 	// filter out matching errors
+	// todo Build this next
+	//report.filter()???
+	if len(report.UrlsToCheck) > 0 {
+		return false, nil
+	}
 
-	return ok, nil
+	return true, nil
 }
 
 func (c *commandFilter) print(xs ...any) {
