@@ -174,3 +174,45 @@ func TestLoadReportBigSuccessAndError(t *testing.T) {
 	assert.Equal(t, UrlSuccessLink{Url: "https://help.sonatype.com/css/sm-simple.css", Status: 200}, report.UrlsToCheck[0].Links[0])
 	assert.Equal(t, UrlErrorLink{Url: "https://help.sonatype.com/index.html#content-wrapper", Error: "id #content-wrapper not found"}, report.UrlsToCheck[0].Links[71])
 }
+
+func TestUrlErrorIsMatch(t *testing.T) {
+	errLink := UrlErrorLink{"a", "b"}
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"x", "y"}))
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"a", "y"}))
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"x", "b"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "b"}))
+}
+func TestReportFilterOneErrorNoMatch(t *testing.T) {
+	resp := parseResponse{jsonReportOneError}
+	report, err := resp.loadReport()
+	assert.Nil(t, err)
+
+	reportFiltered, err := report.filter(nil)
+	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
+	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlErrorToCheck}}, report)
+}
+func TestReportFilterOneErrorMatch(t *testing.T) {
+	resp := parseResponse{jsonReportOneError}
+	report, err := resp.loadReport()
+	assert.Nil(t, err)
+
+	reportFiltered, err := report.filter([]UrlErrorLink{
+		{Url: "https://help.sonatype.com/index.html#content-wrapper", Error: "id #content-wrapper not found"},
+	})
+	assert.Equal(t, 0, len(reportFiltered.UrlsToCheck[0].Links))
+}
+func TestReportFilterTwoErrorMatch(t *testing.T) {
+	resp := parseResponse{jsonReportOneError}
+	report, err := resp.loadReport()
+	assert.Nil(t, err)
+
+	keptErrLink := UrlErrorLink{"urlNoMatch", "errorNoMatch"}
+	report.UrlsToCheck[0].Links = append(report.UrlsToCheck[0].Links, keptErrLink)
+
+	reportFiltered, err := report.filter([]UrlErrorLink{
+		{Url: "https://help.sonatype.com/index.html#content-wrapper", Error: "id #content-wrapper not found"},
+	})
+	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
+	assert.Equal(t, keptErrLink, reportFiltered.UrlsToCheck[0].Links[0])
+	assert.Equal(t, keptErrLink, report.UrlsToCheck[0].Links[0])
+}

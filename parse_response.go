@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 )
 
 type UrlSuccessLink struct {
@@ -13,6 +14,14 @@ type UrlErrorLink struct {
 	Url   string `json:"url"`
 	Error string `json:"error"`
 }
+
+func (errorLink *UrlErrorLink) isMatch(link UrlErrorLink) bool {
+	if (errorLink.Url == link.Url) && (errorLink.Error == link.Error) {
+		return true
+	}
+	return false
+}
+
 type UrlToCheck struct {
 	Url   string        `json:"url"`
 	Links []interface{} `json:"links"`
@@ -76,4 +85,24 @@ func (r *parseResponse) loadReport() (Report, error) {
 	}
 
 	return report, nil
+}
+
+func (rep *Report) filter(errorsToIgnore []UrlErrorLink) (Report, error) {
+	//temp := s[:0]
+	for indexUrl, urlToCheck := range rep.UrlsToCheck {
+		for indexLink, link := range urlToCheck.Links {
+			switch v := link.(type) {
+			case UrlErrorLink:
+				for _, errToIgnore := range errorsToIgnore {
+					if v.isMatch(errToIgnore) {
+						// remove this error link
+						rep.UrlsToCheck[indexUrl].Links = append(urlToCheck.Links[:indexLink], urlToCheck.Links[indexLink+1:]...)
+					}
+				}
+			default:
+				return *rep, errors.New(fmt.Sprintf("I don't know about type %T!\n", v))
+			}
+		}
+	}
+	return *rep, nil
 }
