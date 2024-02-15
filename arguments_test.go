@@ -21,13 +21,24 @@ func TestGetArguments(t *testing.T) {
 	}
 }
 
-func TestGetArgumentsError(t *testing.T) {
+func TestGetArgumentsErrorArgsCount(t *testing.T) {
 	for _, ss := range [][]string{
 		{},
 		{"foo", "my-file.json"},
 	} {
 		_, err := getArguments(ss)
 		assert.NotNil(t, err)
+		assert.EqualError(t, err, "invalid number of arguments")
+	}
+}
+
+func TestGetArgumentsErrorUnknownFlag(t *testing.T) {
+	for _, ss := range [][]string{
+		{"--bogusArg"},
+	} {
+		_, err := getArguments(ss)
+		assert.NotNil(t, err)
+		assert.EqualError(t, err, "unknown flag `bogusArg'")
 	}
 }
 
