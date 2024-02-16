@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"slices"
 )
 
 var defaultOptions = []string{"--buffer-size=8192", "--max-connections=10", "--color=always", "--format=json"}
@@ -57,8 +58,10 @@ func (r *realMuffetExecutor) Check() (string, error) {
 			line = line[:(len(line) - 1)]
 		}
 		jsonReportOut = jsonReportOut + string(line)
-		os.Stdout.Write(line)
-		os.Stdout.Write([]byte{'\n'})
+		if slices.Contains(r.options.arguments, "--verbose") || slices.Contains(r.options.arguments, "-v") {
+			os.Stdout.Write(line)
+			os.Stdout.Write([]byte{'\n'})
+		}
 	}
 	// Read stderr
 	for {

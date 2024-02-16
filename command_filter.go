@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/logrusorgru/aurora/v3"
 	"io"
+	"os"
 	"strings"
 )
 
@@ -63,6 +65,13 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 		return false, err
 	}
 	if len(report.UrlsToCheck) > 0 {
+		prettyJson, err := json.MarshalIndent(report, "", "  ")
+		if err != nil {
+			return false, err
+		}
+		_, _ = os.Stdout.Write(prettyJson)
+		fmt.Println()
+		//fmt.Printf("%v\n", report)
 		return false, nil
 	}
 
