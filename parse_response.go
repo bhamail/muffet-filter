@@ -99,9 +99,16 @@ func (rep *Report) filter(errorsToIgnore []UrlErrorLink) (Report, error) {
 						rep.UrlsToCheck[indexUrl].Links = append(urlToCheck.Links[:indexLink], urlToCheck.Links[indexLink+1:]...)
 					}
 				}
+			case UrlSuccessLink:
+				// do nothing here, as we leave success links alone for now
+				// maybe later we could decide to add a "quiet" mode, where success links get removed
 			default:
 				return *rep, errors.New(fmt.Sprintf("I don't know about type %T!\n", v))
 			}
+		}
+		// remove UrlToCheck if no links exist
+		if len(rep.UrlsToCheck[indexUrl].Links) == 0 {
+			rep.UrlsToCheck = append(rep.UrlsToCheck[:indexUrl], rep.UrlsToCheck[indexUrl+1:]...)
 		}
 	}
 	return *rep, nil

@@ -56,7 +56,12 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 
 	// filter out matching errors
 	// todo Build this next
-	//report.filter()???
+	// load errorsToIgnore from on disk config and/or args
+	var errorsToIgnore []UrlErrorLink
+	_, err = report.filter(errorsToIgnore)
+	if err != nil {
+		return false, err
+	}
 	if len(report.UrlsToCheck) > 0 {
 		return false, nil
 	}
