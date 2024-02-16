@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/jessevdk/go-flags"
 )
 
@@ -23,7 +24,7 @@ func getArguments(ss []string) (*arguments, error) {
 	} else if args.Version || args.Help {
 		return &args, nil
 	} else if len(ss) != 1 {
-		return nil, errors.New("invalid number of arguments")
+		return nil, errors.New(fmt.Sprintf("invalid number of arguments\n\n" + help()))
 	}
 
 	args.URL = ss[0]
@@ -37,7 +38,7 @@ func help() string {
 
 	// Parse() is run here to show default values in help.
 	// This seems to be a bug in go-flags.
-	p.Parse() // nolint:errcheck
+	_, _ = p.Parse() // nolint:errcheck
 
 	b := &bytes.Buffer{}
 	p.WriteHelp(b)

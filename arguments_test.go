@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/bradleyjkemp/cupaloy"
 	"testing"
 
@@ -28,7 +29,7 @@ func TestGetArgumentsErrorArgsCount(t *testing.T) {
 	} {
 		_, err := getArguments(ss)
 		assert.NotNil(t, err)
-		assert.EqualError(t, err, "invalid number of arguments")
+		assert.EqualError(t, err, fmt.Sprintf("invalid number of arguments\n\n%s", help()))
 	}
 }
 
