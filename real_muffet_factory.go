@@ -31,7 +31,12 @@ func (r *realMuffetExecutor) Check() (string, error) {
 	cmd := exec.Command("/Users/bhamail/sonatype/sasq/link-checker/muffet/muffet", r.options.arguments...)
 	cmdStdOut, err := cmd.StdoutPipe()
 	cmdStdErr, err := cmd.StderrPipe()
-	defer cmdStdOut.Close()
+	defer func(cmdStdOut io.ReadCloser) {
+		err := cmdStdOut.Close()
+		if err != nil {
+			_, _ = fmt.Fprintln(os.Stderr, err)
+		}
+	}(cmdStdOut)
 	if err != nil {
 		log.Fatalf("command failed with %s\n", err)
 	}
@@ -39,7 +44,7 @@ func (r *realMuffetExecutor) Check() (string, error) {
 	stderrReader := bufio.NewReader(cmdStdErr)
 	err = cmd.Start()
 	if err != nil {
-		return "", err
+		_, _ = fmt.Fprintln(os.Stderr, err)
 	}
 	// Read stdout
 	// capture in string
@@ -59,8 +64,8 @@ func (r *realMuffetExecutor) Check() (string, error) {
 		}
 		jsonReportOut = jsonReportOut + string(line)
 		if slices.Contains(r.options.arguments, "--verbose") || slices.Contains(r.options.arguments, "-v") {
-			os.Stdout.Write(line)
-			os.Stdout.Write([]byte{'\n'})
+			_, _ = os.Stdout.Write(line)
+			_, _ = os.Stdout.Write([]byte{'\n'})
 		}
 	}
 	// Read stderr
@@ -76,10 +81,12 @@ func (r *realMuffetExecutor) Check() (string, error) {
 			}
 			line = line[:(len(line) - 1)]
 		}
-		os.Stderr.Write(line)
-		os.Stderr.Write([]byte{'\n'})
+		_, _ = os.Stderr.Write(line)
+		_, _ = os.Stderr.Write([]byte{'\n'})
 	}
-	cmd.Wait()
+	if err = cmd.Wait(); err != nil {
+		return jsonReportOut, err
+	}
 	// we ignore exit code because failed links result in non-zero exit code
 	fmt.Println(cmd.ProcessState.ExitCode())
 

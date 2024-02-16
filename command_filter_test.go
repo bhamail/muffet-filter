@@ -31,7 +31,7 @@ func newTestCommandWithStderr(stderr io.Writer, f muffetFactory) *commandFilter 
 func TestCommandRun(t *testing.T) {
 	ok := newTestCommand(
 		newFakeMuffetFactory("hello", nil),
-	).Run([]string{"http://foo.com"})
+	).Run([]string{"https://foo.com"})
 
 	assert.True(t, ok)
 }
