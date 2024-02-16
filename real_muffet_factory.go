@@ -44,7 +44,7 @@ func (r *realMuffetExecutor) Check() (string, error) {
 	stderrReader := bufio.NewReader(cmdStdErr)
 	err = cmd.Start()
 	if err != nil {
-		_, _ = fmt.Fprintln(os.Stderr, err)
+		return "", err
 	}
 	// Read stdout
 	// capture in string
@@ -84,10 +84,8 @@ func (r *realMuffetExecutor) Check() (string, error) {
 		_, _ = os.Stderr.Write(line)
 		_, _ = os.Stderr.Write([]byte{'\n'})
 	}
-	if err = cmd.Wait(); err != nil {
-		return jsonReportOut, err
-	}
 	// we ignore exit code because failed links result in non-zero exit code
+	_ = cmd.Wait()
 	fmt.Println(cmd.ProcessState.ExitCode())
 
 	return jsonReportOut, nil
