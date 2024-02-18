@@ -8,11 +8,55 @@
     "error": "403"
   },
   {
+    "url": "https://www.raspberrypi.com/products/",
+    "error": "403"
+  },
+  {
+    "url": "https://www.raspberrypi.com/products/raspberry-pi-5/",
+    "error": "403"
+  },
+  {
+    "url": "https://www.raspberrypi.com/products/raspberry-pi-4-model-b/",
+    "error": "403"
+  },
+  {
+    "url": "https://www.raspberrypi.com/products/raspberry-pi-4-model-b/?variant=raspberry-pi-4-model-b-8gb",
+    "error": "403"
+  },
+  {
+    "url": "https://vilros.com/products/raspberry-pi-5-official-power-supply",
+    "error": "403"
+  },
+  {
     "url": "https://www.apache.org/licenses/#apache-license-version-20",
     "error": "id #apache-license-version-20 not found"
   },
   {
     "url": "https://www.apache.org/licenses/#apply",
     "error": "id #apply not found"
+  },
+  {
+    "url": "https://infra-reports.apache.org/#uptime",
+    "error": "id #uptime not found"
+  },
+  {
+    "url": "https://www.linkedin.com/company/the-apache-software-foundation/",
+    "error": "999"
+  },
+  {
+    "url": "https://www.redbubble.com/people/comdev/shop",
+    "error": "403"
+  },
+  {
+    "url": "https://bhamail.github.io/js/jquery.min.js",
+    "error": "404"
+  },
+  {
+    "url": "https://bhamail.github.io/js/bootstrap.js",
+    "error": "404"
+  },
+  {
+    "url": "https://bhamail.github.io/js/slideshow.js",
+    "error": "404"
   }
 ]
