@@ -5,11 +5,27 @@ import (
 	"errors"
 	"fmt"
 	"github.com/jessevdk/go-flags"
+	"log"
+	"os"
 )
 
-const defaultIgnoresFile = "~/.muffet-filter/ignores.json"
+func getUserHomeDir() (dirName string, err error) {
+	dirName, err = os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return
+}
 
-var ignoresHelp = "short:\"i\" long:\"ignores\" description:\"File containing url errors to ignore in json format. Default: " + defaultIgnoresFile
+const configDir = ".muffet-filter"
+const ignoresFilename = "ignores.json"
+
+var defaultIgnoresSuffix = configDir + "/" + ignoresFilename
+
+func getDefaultIgnoresFile() string {
+	homeDir, _ := getUserHomeDir()
+	return homeDir + "/" + defaultIgnoresSuffix
+}
 
 type arguments struct {
 	MuffetJson  string `short:"j" long:"input-json" description:"Path to muffet link check output file in json format"`

@@ -5,12 +5,28 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"reflect"
 )
+
+func newErrorForMissingField(fieldName, theStruct interface{}) error {
+	return errors.New(fmt.Sprintf("missing required field: '%s' for type: %s, %+v", fieldName, reflect.TypeOf(theStruct).Name(), theStruct))
+}
 
 type UrlSuccessLink struct {
 	Url    string `json:"url"`
 	Status int    `json:"status"`
 }
+
+func (successLink *UrlSuccessLink) validate() error {
+	// make sure required fields exist in the ErrorLink
+	if successLink.Url == "" {
+		return newErrorForMissingField("Url", *successLink)
+	} else if successLink.Status == 0 {
+		return newErrorForMissingField("Status", *successLink)
+	}
+	return nil
+}
+
 type UrlErrorLink struct {
 	Url   string `json:"url"`
 	Error string `json:"error"`
@@ -21,6 +37,16 @@ func (errorLink *UrlErrorLink) isMatch(link UrlErrorLink) bool {
 		return true
 	}
 	return false
+}
+
+func (errorLink *UrlErrorLink) validate() error {
+	// make sure required fields exist in the ErrorLink
+	if errorLink.Url == "" {
+		return newErrorForMissingField("Url", *errorLink)
+	} else if errorLink.Error == "" {
+		return newErrorForMissingField("Error", *errorLink)
+	}
+	return nil
 }
 
 type UrlToCheck struct {
@@ -35,60 +61,67 @@ type parseResponse struct {
 	rawdata string
 }
 
-func (r *parseResponse) loadReport() (Report, error) {
-	var report Report
+func (r *parseResponse) loadReport() (report Report, err error) {
 
 	var raw []json.RawMessage
-	if err := json.Unmarshal([]byte(r.rawdata), &raw); err != nil {
-		return report, err
+	if err = json.Unmarshal([]byte(r.rawdata), &raw); err != nil {
+		return
 	}
 
 	for i := 0; i < len(raw); i++ {
 		var urlToCheck UrlToCheck
-		if err := json.Unmarshal(raw[i], &urlToCheck); err != nil {
-			return report, err
+		if err = json.Unmarshal(raw[i], &urlToCheck); err != nil {
+			return
 		}
 		// convert untyped Links map to specific link types
 		for j := 0; j < len(urlToCheck.Links); j++ {
 			rawLink := urlToCheck.Links[j]
 
 			var jsonLink []byte
-			if jsonRaw, err := json.Marshal(rawLink); err != nil {
-				return report, err
-			} else {
-				jsonLink = jsonRaw
+			if jsonLink, err = json.Marshal(rawLink); err != nil {
+				return
 			}
 
 			if mapLink, ok := rawLink.(map[string]interface{}); !ok {
-				return report, errors.New("invalid link map")
+				err = errors.New("invalid link map")
+				return
 			} else if _, ok := mapLink["status"]; ok {
 				// must be a Success link
 				var urlSuccessLink UrlSuccessLink
-				if err := json.Unmarshal(jsonLink, &urlSuccessLink); err == nil {
+				if err = json.Unmarshal(jsonLink, &urlSuccessLink); err == nil {
+					// make sure required fields exist in the SuccessLink
+					if err = urlSuccessLink.validate(); err != nil {
+						return
+					}
+
 					// replace link in report struct
 					urlToCheck.Links[j] = urlSuccessLink
 				} else {
-					return report, err
+					return
 				}
 			} else {
 				// try using UrlErrorLink
 				var urlErrorLink UrlErrorLink
-				if err := json.Unmarshal(jsonLink, &urlErrorLink); err == nil {
+				if err = json.Unmarshal(jsonLink, &urlErrorLink); err == nil {
+					// make sure required fields exist in the ErrorLink
+					if err = urlErrorLink.validate(); err != nil {
+						return
+					}
+
 					// replace link in report struct
 					urlToCheck.Links[j] = urlErrorLink
 					continue
 				} else {
-					return report, err
+					return
 				}
 			}
 		}
 		report.UrlsToCheck = append(report.UrlsToCheck, urlToCheck)
 	}
-
-	return report, nil
+	return
 }
 
-func (rep *Report) filter(errorsToIgnore []UrlErrorLink, isVerbose bool) (Report, error) {
+func (rep *Report) filter(errorsToIgnore []UrlErrorLink, isVerbose bool) (filteredReport Report, err error) {
 	var tempUrlsToCheck []UrlToCheck
 	for _, urlToCheck := range rep.UrlsToCheck {
 		tempUrlToCheck := UrlToCheck{Url: urlToCheck.Url}
@@ -105,7 +138,8 @@ func (rep *Report) filter(errorsToIgnore []UrlErrorLink, isVerbose bool) (Report
 				// maybe later we could decide to add a "quiet" mode, where success links get removed
 				tempUrlToCheck.Links = append(tempUrlToCheck.Links, link)
 			default:
-				return *rep, errors.New(fmt.Sprintf("I don't know about type %T!\n", v))
+				err = errors.New(fmt.Sprintf("I don't know about type %T!\n", v))
+				return
 			}
 		}
 		// add UrlToCheck if links exist
@@ -113,7 +147,8 @@ func (rep *Report) filter(errorsToIgnore []UrlErrorLink, isVerbose bool) (Report
 			tempUrlsToCheck = append(tempUrlsToCheck, tempUrlToCheck)
 		}
 	}
-	return Report{UrlsToCheck: tempUrlsToCheck}, nil
+	filteredReport = Report{UrlsToCheck: tempUrlsToCheck}
+	return
 }
 
 func isErrorIgnored(urlError UrlErrorLink, errorsToIgnore []UrlErrorLink) bool {
@@ -125,26 +160,40 @@ func isErrorIgnored(urlError UrlErrorLink, errorsToIgnore []UrlErrorLink) bool {
 	return false
 }
 
-func loadIgnoreList(ignoreFile string) (ignoreUrlErrors []UrlErrorLink, err error) {
-	var ignoreListFile = defaultIgnoresFile
-	if ignoreFile != "" {
-		ignoreListFile = ignoreFile
-		if _, err := os.Stat(ignoreListFile); errors.Is(err, os.ErrNotExist) {
-			return ignoreUrlErrors, err
+func doesFileExist(fileToCheck string) (itExists bool, err error) {
+	_, err = os.Stat(fileToCheck)
+	if err == nil {
+		itExists = true
+	} else if errors.Is(err, os.ErrNotExist) {
+		itExists = false
+	}
+	return
+}
+
+func loadIgnoreList(args *arguments) (ignoreUrlErrors []UrlErrorLink, err error) {
+	var ignoreListFile = getDefaultIgnoresFile()
+	if args.IgnoresJson != "" {
+		ignoreListFile = args.IgnoresJson
+		var itExists bool
+		if itExists, err = doesFileExist(ignoreListFile); !itExists {
+			// a non-default file was specified, so it is an error if that specified file is missing
+			return
 		}
 	}
 
-	ignoreListRaw, err := os.ReadFile(ignoreListFile)
+	var ignoreListRaw []byte
+	ignoreListRaw, err = os.ReadFile(ignoreListFile)
 	if err != nil {
-		//return nil, err
-		fmt.Printf("ignoring missing ignores file: %s", ignoreListFile)
-		return ignoreUrlErrors, nil
+		if args.Verbose {
+			fmt.Printf("ignoring missing ignores file: %s", ignoreListFile)
+		}
+		err = nil
+		return
 	}
 
 	err = json.Unmarshal(ignoreListRaw, &ignoreUrlErrors)
 	if err != nil {
-		return nil, err
+		fmt.Printf("error loading ignore list file: %s, error: %v", ignoreListFile, err)
 	}
-
-	return ignoreUrlErrors, err
+	return
 }

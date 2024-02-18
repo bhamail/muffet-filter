@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -20,12 +21,16 @@ func TestLoadReportEmpty(t *testing.T) {
 	assert.Equal(t, Report{}, report)
 }
 
+const urlToCheckUrl string = "https://help.sonatype.com/index.html"
+const urlErrorLinkUrl string = "https://help.sonatype.com/index.html#content-wrapper"
+const urlErrorLinkError string = "id #content-wrapper not found"
+
 const jsonUrlErrorLInk = `{
-    "url": "https://help.sonatype.com/index.html",
+    "url": "` + urlToCheckUrl + `",
     "links": [
       {
-        "url": "https://help.sonatype.com/index.html#content-wrapper",
-        "error": "id #content-wrapper not found"
+        "url": "` + urlErrorLinkUrl + `",
+        "error": "` + urlErrorLinkError + `"
       }
     ]
   }`
@@ -34,31 +39,79 @@ func TestLoadUrlErrorLink(t *testing.T) {
 	var urlToCheck UrlToCheck
 	err := json.Unmarshal([]byte(jsonUrlErrorLInk), &urlToCheck)
 	assert.Nil(t, err)
-	assert.Equal(t, UrlToCheck{Url: "https://help.sonatype.com/index.html",
+	assert.Equal(t, UrlToCheck{Url: urlToCheckUrl,
 		Links: []interface{}{
-			map[string]interface{}{"url": "https://help.sonatype.com/index.html#content-wrapper", "error": "id #content-wrapper not found"},
+			map[string]interface{}{"url": urlErrorLinkUrl, "error": urlErrorLinkError},
 		}},
 		urlToCheck)
+}
+
+func TestUrlSuccessLinkValidate(t *testing.T) {
+	{
+		badLink := UrlSuccessLink{Status: -1}
+		assert.EqualError(t, badLink.validate(), newErrorForMissingField("Url", badLink).Error())
+	}
+
+	{
+		badLink := UrlSuccessLink{Url: "myUrl"}
+		assert.EqualError(t, badLink.validate(), newErrorForMissingField("Status", badLink).Error())
+	}
+
+	{
+		badLink := UrlSuccessLink{}
+		assert.EqualError(t, badLink.validate(), newErrorForMissingField("Url", badLink).Error())
+	}
+}
+func TestUrlErrorLinkValidate(t *testing.T) {
+	{
+		badLink := UrlErrorLink{Error: "myError"}
+		assert.EqualError(t, badLink.validate(), newErrorForMissingField("Url", badLink).Error())
+	}
+
+	{
+		badLink := UrlErrorLink{Url: "myUrl"}
+		assert.EqualError(t, badLink.validate(), newErrorForMissingField("Error", badLink).Error())
+	}
+
+	{
+		badLink := UrlErrorLink{}
+		assert.EqualError(t, badLink.validate(), newErrorForMissingField("Url", badLink).Error())
+	}
 }
 
 const jsonReportOneError = `[
   ` + jsonUrlErrorLInk + `
 ]`
 
-var expectedFirstUrlErrorToCheck = UrlToCheck{
-	Url: "https://help.sonatype.com/index.html",
+var expectedFirstUrlToCheckError = UrlToCheck{
+	Url: urlToCheckUrl,
 	Links: []interface{}{
 		UrlErrorLink{
-			Url:   "https://help.sonatype.com/index.html#content-wrapper",
-			Error: "id #content-wrapper not found",
+			Url:   urlErrorLinkUrl,
+			Error: urlErrorLinkError,
 		}},
 }
 
+func TestLoadReportErrorLinkValue(t *testing.T) {
+	jsonUrlErrorLInkBadVal := `[{
+    "url": "` + urlToCheckUrl + `",
+    "links": [
+      {
+        "urlBad": "` + urlErrorLinkUrl + `",
+        "errorBad": "` + urlErrorLinkError + `"
+      }
+    ]
+  }]`
+	resp := parseResponse{jsonUrlErrorLInkBadVal}
+	report, err := resp.loadReport()
+	assert.EqualError(t, err, "missing required field: 'Url' for type: UrlErrorLink, {Url: Error:}")
+	assert.Equal(t, Report{}, report)
+}
 func TestLoadReportOneError(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
 	report, err := resp.loadReport()
 	assert.Nil(t, err)
-	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlErrorToCheck}}, report)
+	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlToCheckError}}, report)
 }
 
 func TestLoadReportErrorParsingUrlToCheck(t *testing.T) {
@@ -71,15 +124,8 @@ func TestLoadReportErrorParsingUrlToCheck(t *testing.T) {
 func TestLoadReportEmptyLinks(t *testing.T) {
 	resp := parseResponse{`[{"url":"myUrl", "links": [{}]}]`}
 	report, err := resp.loadReport()
-	assert.Nil(t, err, "json: cannot unmarshal number into Go struct field UrlToCheck.url of type string")
-	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{{
-		Url: "myUrl",
-		Links: []interface{}{
-			UrlErrorLink{
-				Url:   "",
-				Error: "",
-			}},
-	}}}, report)
+	assert.EqualError(t, err, newErrorForMissingField("Url", UrlErrorLink{}).Error())
+	assert.Equal(t, Report{}, report)
 }
 
 var expectedNearLast159UrlErrorToCheck = UrlToCheck{
@@ -99,7 +145,7 @@ func TestLoadReportBigErrorsOnly(t *testing.T) {
 
 	assert.NotNil(t, report)
 	assert.Equal(t, 162, len(report.UrlsToCheck))
-	assert.Equal(t, expectedFirstUrlErrorToCheck, report.UrlsToCheck[0])
+	assert.Equal(t, expectedFirstUrlToCheckError, report.UrlsToCheck[0])
 	assert.Equal(t, expectedNearLast159UrlErrorToCheck, report.UrlsToCheck[159])
 }
 
@@ -182,6 +228,55 @@ func TestUrlErrorIsMatch(t *testing.T) {
 	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"x", "b"}))
 	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "b"}))
 }
+
+func TestLoadIgnoreListFromTestdata(t *testing.T) {
+	args := arguments{IgnoresJson: "testdata/urlErrorIgnore.json"}
+	ignores, err := loadIgnoreList(&args)
+	assert.Nil(t, err)
+	assert.NotNil(t, ignores)
+}
+func TestLoadIgnoreListBadArg(t *testing.T) {
+	args := arguments{IgnoresJson: "bad-ignore-file.json"}
+	ignores, err := loadIgnoreList(&args)
+	assert.EqualError(t, err, "stat bad-ignore-file.json: no such file or directory")
+	assert.Nil(t, ignores)
+}
+func TestLoadIgnoreListMissingDefault(t *testing.T) {
+	// override default ignores file to non-existent file/path
+	origDefaultIgnoresSuffix := defaultIgnoresSuffix
+	defer func() {
+		defaultIgnoresSuffix = origDefaultIgnoresSuffix
+	}()
+	defaultIgnoresSuffix = "bogusIgnoresTestPathSuffix"
+
+	args := arguments{Verbose: true}
+	ignores, err := loadIgnoreList(&args)
+	assert.Nil(t, err)
+	assert.Nil(t, ignores)
+}
+func TestLoadIgnoreListInvalidDefault(t *testing.T) {
+	// override default ignores file to non-existent file/path
+	origDefaultIgnoresSuffix := defaultIgnoresSuffix
+	defer func() {
+		defaultIgnoresSuffix = origDefaultIgnoresSuffix
+	}()
+	pwd, _ := os.Getwd()
+	userHome, _ := getUserHomeDir()
+	indexProjectPath := strings.Index(pwd, userHome)
+	if indexProjectPath == -1 {
+		t.Skipf("skip test: %s, because our project is not under user home directory", t.Name())
+		return
+	}
+	projectPath := pwd[indexProjectPath+1+len(userHome):]
+	badTestFile := projectPath + "/testdata/bad.json"
+	defaultIgnoresSuffix = badTestFile
+
+	args := arguments{Verbose: true}
+	ignores, err := loadIgnoreList(&args)
+	assert.EqualError(t, err, "invalid character 's' looking for beginning of value")
+	assert.Nil(t, ignores)
+}
+
 func TestReportFilterOneErrorNoMatch(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
 	report, err := resp.loadReport()
@@ -191,7 +286,7 @@ func TestReportFilterOneErrorNoMatch(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, report.UrlsToCheck[0], reportFiltered.UrlsToCheck[0])
 	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
-	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlErrorToCheck}}, report)
+	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlToCheckError}}, report)
 }
 func TestReportFilterOneErrorMatch(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}

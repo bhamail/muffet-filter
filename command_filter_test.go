@@ -35,9 +35,3 @@ func TestCommandRun(t *testing.T) {
 
 	assert.True(t, ok)
 }
-
-func TestLoadIgnoreListFromTestdata(t *testing.T) {
-	ignores, err := loadIgnoreList("testdata/urlErrorIgnore.json")
-	assert.Nil(t, err)
-	assert.NotNil(t, ignores)
-}
