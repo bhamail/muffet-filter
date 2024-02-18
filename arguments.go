@@ -22,9 +22,8 @@ const ignoresFilename = "ignores.json"
 
 var defaultIgnoresSuffix = configDir + "/" + ignoresFilename
 
-func getDefaultIgnoresFile() string {
-	homeDir, _ := getUserHomeDir()
-	return homeDir + "/" + defaultIgnoresSuffix
+func getDefaultIgnoresFile(prefix string) string {
+	return prefix + "/" + defaultIgnoresSuffix
 }
 
 type arguments struct {

@@ -241,7 +241,7 @@ func TestLoadIgnoreListBadArg(t *testing.T) {
 	assert.EqualError(t, err, "stat bad-ignore-file.json: no such file or directory")
 	assert.Nil(t, ignores)
 }
-func TestLoadIgnoreListMissingDefault(t *testing.T) {
+func TestLoadIgnoreListMissingAllDefaults(t *testing.T) {
 	// override default ignores file to non-existent file/path
 	origDefaultIgnoresSuffix := defaultIgnoresSuffix
 	defer func() {
@@ -253,6 +253,19 @@ func TestLoadIgnoreListMissingDefault(t *testing.T) {
 	ignores, err := loadIgnoreList(&args)
 	assert.Nil(t, err)
 	assert.Nil(t, ignores)
+}
+func TestLoadIgnoreListDefaultCurrentDir(t *testing.T) {
+	// override default ignores file to non-existent file/path
+	origDefaultIgnoresSuffix := defaultIgnoresSuffix
+	defer func() {
+		defaultIgnoresSuffix = origDefaultIgnoresSuffix
+	}()
+	defaultIgnoresSuffix = "testdata/urlErrorIgnore.json"
+
+	args := arguments{Verbose: true}
+	ignores, err := loadIgnoreList(&args)
+	assert.Nil(t, err)
+	assert.NotNil(t, ignores)
 }
 func TestLoadIgnoreListInvalidDefault(t *testing.T) {
 	// override default ignores file to non-existent file/path

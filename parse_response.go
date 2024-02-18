@@ -171,13 +171,23 @@ func doesFileExist(fileToCheck string) (itExists bool, err error) {
 }
 
 func loadIgnoreList(args *arguments) (ignoreUrlErrors []UrlErrorLink, err error) {
-	var ignoreListFile = getDefaultIgnoresFile()
+	var ignoreListFile string
 	if args.IgnoresJson != "" {
 		ignoreListFile = args.IgnoresJson
 		var itExists bool
 		if itExists, err = doesFileExist(ignoreListFile); !itExists {
 			// a non-default file was specified, so it is an error if that specified file is missing
 			return
+		}
+	} else {
+		// next, we look for ignores file in the current working directory
+		pwd, _ := os.Getwd()
+		ignoreListFile = getDefaultIgnoresFile(pwd)
+		var itExists bool
+		if itExists, err = doesFileExist(ignoreListFile); !itExists {
+			// check user home dir for ignores file
+			homeDir, _ := getUserHomeDir()
+			ignoreListFile = getDefaultIgnoresFile(homeDir)
 		}
 	}
 
