@@ -3,6 +3,8 @@ Usage:
 
 Application Options:
   -j, --input-json= Path to muffet link check output file in json format
+  -i, --ignores=    File containing url errors to ignore in json format.
+                    Default: ~/.muffet-filter/ignores.json
   -v, --verbose     Show more output
   -h, --help        Show this help
       --version     Show version

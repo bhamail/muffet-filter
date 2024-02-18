@@ -187,8 +187,9 @@ func TestReportFilterOneErrorNoMatch(t *testing.T) {
 	report, err := resp.loadReport()
 	assert.Nil(t, err)
 
-	reportFiltered, err := report.filter(nil)
+	reportFiltered, err := report.filter(nil, false)
 	assert.Nil(t, err)
+	assert.Equal(t, report.UrlsToCheck[0], reportFiltered.UrlsToCheck[0])
 	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
 	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlErrorToCheck}}, report)
 }
@@ -199,9 +200,10 @@ func TestReportFilterOneErrorMatch(t *testing.T) {
 
 	reportFiltered, err := report.filter([]UrlErrorLink{
 		{Url: "https://help.sonatype.com/index.html#content-wrapper", Error: "id #content-wrapper not found"},
-	})
+	}, false)
 	assert.Nil(t, err)
 	assert.Equal(t, 0, len(reportFiltered.UrlsToCheck))
+	assert.Equal(t, 1, len(report.UrlsToCheck))
 }
 func TestReportFilterTwoErrorMatch(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
@@ -213,10 +215,10 @@ func TestReportFilterTwoErrorMatch(t *testing.T) {
 
 	reportFiltered, err := report.filter([]UrlErrorLink{
 		{Url: "https://help.sonatype.com/index.html#content-wrapper", Error: "id #content-wrapper not found"},
-	})
+	}, false)
 	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
 	assert.Equal(t, keptErrLink, reportFiltered.UrlsToCheck[0].Links[0])
-	assert.Equal(t, keptErrLink, report.UrlsToCheck[0].Links[0])
+	assert.Equal(t, keptErrLink, report.UrlsToCheck[0].Links[1])
 }
 func TestReportFilterErrorMatchAndSuccessLink(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
@@ -228,11 +230,11 @@ func TestReportFilterErrorMatchAndSuccessLink(t *testing.T) {
 
 	reportFiltered, err := report.filter([]UrlErrorLink{
 		{Url: "https://help.sonatype.com/index.html#content-wrapper", Error: "id #content-wrapper not found"},
-	})
+	}, false)
 	assert.Nil(t, err)
 	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
 	assert.Equal(t, keptSuccessLink, reportFiltered.UrlsToCheck[0].Links[0])
-	assert.Equal(t, keptSuccessLink, report.UrlsToCheck[0].Links[0])
+	assert.Equal(t, keptSuccessLink, report.UrlsToCheck[0].Links[1])
 }
 func TestReportFilterUnknownLinkInterface(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
@@ -242,6 +244,6 @@ func TestReportFilterUnknownLinkInterface(t *testing.T) {
 	unknownLinkType := "unknown type"
 	report.UrlsToCheck[0].Links = append(report.UrlsToCheck[0].Links, unknownLinkType)
 
-	_, err = report.filter(nil)
+	_, err = report.filter(nil, false)
 	assert.EqualError(t, err, "I don't know about type string!\n")
 }

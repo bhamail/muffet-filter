@@ -7,12 +7,17 @@ import (
 	"github.com/jessevdk/go-flags"
 )
 
+const defaultIgnoresFile = "~/.muffet-filter/ignores.json"
+
+var ignoresHelp = "short:\"i\" long:\"ignores\" description:\"File containing url errors to ignore in json format. Default: " + defaultIgnoresFile
+
 type arguments struct {
-	MuffetJson string `short:"j" long:"input-json" description:"Path to muffet link check output file in json format"`
-	Verbose    bool   `short:"v" long:"verbose" description:"Show more output"`
-	Help       bool   `short:"h" long:"help" description:"Show this help"`
-	Version    bool   `long:"version" description:"Show version"`
-	URL        string
+	MuffetJson  string `short:"j" long:"input-json" description:"Path to muffet link check output file in json format"`
+	IgnoresJson string `short:"i" long:"ignores" description:"File containing url errors to ignore in json format. Default: ~/.muffet-filter/ignores.json"`
+	Verbose     bool   `short:"v" long:"verbose" description:"Show more output"`
+	Help        bool   `short:"h" long:"help" description:"Show this help"`
+	Version     bool   `long:"version" description:"Show version"`
+	URL         string
 }
 
 func getArguments(ss []string) (*arguments, error) {

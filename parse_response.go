@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 )
 
 type UrlSuccessLink struct {
@@ -87,29 +88,63 @@ func (r *parseResponse) loadReport() (Report, error) {
 	return report, nil
 }
 
-func (rep *Report) filter(errorsToIgnore []UrlErrorLink) (Report, error) {
-	//temp := s[:0]
-	for indexUrl, urlToCheck := range rep.UrlsToCheck {
-		for indexLink, link := range urlToCheck.Links {
+func (rep *Report) filter(errorsToIgnore []UrlErrorLink, isVerbose bool) (Report, error) {
+	var tempUrlsToCheck []UrlToCheck
+	for _, urlToCheck := range rep.UrlsToCheck {
+		tempUrlToCheck := UrlToCheck{Url: urlToCheck.Url}
+		for _, link := range urlToCheck.Links {
 			switch v := link.(type) {
 			case UrlErrorLink:
-				for _, errToIgnore := range errorsToIgnore {
-					if v.isMatch(errToIgnore) {
-						// remove this error link
-						rep.UrlsToCheck[indexUrl].Links = append(urlToCheck.Links[:indexLink], urlToCheck.Links[indexLink+1:]...)
-					}
+				if !isErrorIgnored(v, errorsToIgnore) {
+					tempUrlToCheck.Links = append(tempUrlToCheck.Links, link)
+				} else if isVerbose {
+					fmt.Printf("skipping urlError: %+v on UrlToCheck: %s\n", link, urlToCheck.Url)
 				}
 			case UrlSuccessLink:
 				// do nothing here, as we leave success links alone for now
 				// maybe later we could decide to add a "quiet" mode, where success links get removed
+				tempUrlToCheck.Links = append(tempUrlToCheck.Links, link)
 			default:
 				return *rep, errors.New(fmt.Sprintf("I don't know about type %T!\n", v))
 			}
 		}
-		// remove UrlToCheck if no links exist
-		if len(rep.UrlsToCheck[indexUrl].Links) == 0 {
-			rep.UrlsToCheck = append(rep.UrlsToCheck[:indexUrl], rep.UrlsToCheck[indexUrl+1:]...)
+		// add UrlToCheck if links exist
+		if len(tempUrlToCheck.Links) > 0 {
+			tempUrlsToCheck = append(tempUrlsToCheck, tempUrlToCheck)
 		}
 	}
-	return *rep, nil
+	return Report{UrlsToCheck: tempUrlsToCheck}, nil
+}
+
+func isErrorIgnored(urlError UrlErrorLink, errorsToIgnore []UrlErrorLink) bool {
+	for _, errToIgnore := range errorsToIgnore {
+		if urlError.isMatch(errToIgnore) {
+			return true
+		}
+	}
+	return false
+}
+
+func loadIgnoreList(ignoreFile string) (ignoreUrlErrors []UrlErrorLink, err error) {
+	var ignoreListFile = defaultIgnoresFile
+	if ignoreFile != "" {
+		ignoreListFile = ignoreFile
+		if _, err := os.Stat(ignoreListFile); errors.Is(err, os.ErrNotExist) {
+			return ignoreUrlErrors, err
+		}
+	}
+
+	ignoreListRaw, err := os.ReadFile(ignoreListFile)
+	if err != nil {
+		//return nil, err
+		fmt.Printf("ignoring missing ignores file: %s", ignoreListFile)
+		return ignoreUrlErrors, nil
+	}
+
+	err = json.Unmarshal(ignoreListRaw, &ignoreUrlErrors)
+	if err != nil {
+		return nil, err
+	}
+
+	return ignoreUrlErrors, err
 }

@@ -1,0 +1,18 @@
+[
+  {
+    "url": "https://www.raspberrypi.com/software/",
+    "error": "403"
+  },
+  {
+    "url": "https://www.raspberrypi.com/documentation/computers/getting-started.html",
+    "error": "403"
+  },
+  {
+    "url": "https://www.apache.org/licenses/#apache-license-version-20",
+    "error": "id #apache-license-version-20 not found"
+  },
+  {
+    "url": "https://www.apache.org/licenses/#apply",
+    "error": "id #apply not found"
+  }
+]

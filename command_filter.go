@@ -59,13 +59,17 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 	// filter out matching errors
 	// todo Build this next
 	// load errorsToIgnore from on disk config and/or args
-	var errorsToIgnore []UrlErrorLink
-	_, err = report.filter(errorsToIgnore)
+	errorsToIgnore, err := loadIgnoreList(args.IgnoresJson)
 	if err != nil {
 		return false, err
 	}
-	if len(report.UrlsToCheck) > 0 {
-		prettyJson, err := json.MarshalIndent(report, "", "  ")
+
+	reportFiltered, err := report.filter(errorsToIgnore, args.Verbose)
+	if err != nil {
+		return false, err
+	}
+	if len(reportFiltered.UrlsToCheck) > 0 {
+		prettyJson, err := json.MarshalIndent(reportFiltered, "", "  ")
 		if err != nil {
 			return false, err
 		}
