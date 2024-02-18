@@ -273,7 +273,7 @@ func TestLoadIgnoreListInvalidDefault(t *testing.T) {
 
 	args := arguments{Verbose: true}
 	ignores, err := loadIgnoreList(&args)
-	assert.EqualError(t, err, "invalid character 's' looking for beginning of value")
+	assert.EqualError(t, err, "json: cannot unmarshal string into Go value of type []main.UrlErrorLink")
 	assert.Nil(t, ignores)
 }
 
