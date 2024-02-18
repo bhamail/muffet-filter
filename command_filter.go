@@ -44,7 +44,7 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 	options := muffetOptions{arguments: defaultOptions}
 	options.arguments = append(options.arguments, args.URL)
 	muffetExec := c.factory.Create(options)
-	jsonReport, err := muffetExec.Check()
+	jsonReport, err := muffetExec.Check(args)
 	if err != nil {
 		return false, err
 	}

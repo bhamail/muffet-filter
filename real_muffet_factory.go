@@ -27,16 +27,16 @@ type realMuffetExecutor struct {
 	options muffetOptions
 }
 
-func (r *realMuffetExecutor) Check() (string, error) {
+func (r *realMuffetExecutor) Check(args *arguments) (string, error) {
 	cmd := exec.Command("/Users/bhamail/sonatype/sasq/link-checker/muffet/muffet", r.options.arguments...)
 	cmdStdOut, err := cmd.StdoutPipe()
 	cmdStdErr, err := cmd.StderrPipe()
 	defer func(cmdStdOut io.ReadCloser) {
-		err := cmdStdOut.Close()
-		if err != nil {
-			_, _ = fmt.Fprintln(os.Stderr, err)
-		}
+		_ = cmdStdOut.Close()
 	}(cmdStdOut)
+	defer func(cmdStdErr io.ReadCloser) {
+		_ = cmdStdErr.Close()
+	}(cmdStdErr)
 	if err != nil {
 		log.Fatalf("command failed with %s\n", err)
 	}
@@ -86,7 +86,9 @@ func (r *realMuffetExecutor) Check() (string, error) {
 	}
 	// we ignore exit code because failed links result in non-zero exit code
 	_ = cmd.Wait()
-	fmt.Println(cmd.ProcessState.ExitCode())
+	if args.Verbose {
+		fmt.Println(fmt.Sprintf("called muffet: %s, exit status: %d", cmd.Path, cmd.ProcessState.ExitCode()))
+	}
 
 	return jsonReportOut, nil
 }

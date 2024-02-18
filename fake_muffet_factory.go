@@ -16,6 +16,6 @@ type fakeMuffetExecutor struct {
 	options muffetOptions
 }
 
-func (r *fakeMuffetExecutor) Check() (string, error) {
+func (r *fakeMuffetExecutor) Check(args *arguments) (string, error) {
 	return "[]", nil
 }

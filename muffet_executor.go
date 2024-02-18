@@ -1,5 +1,5 @@
 package main
 
 type muffetExecutor interface {
-	Check() (string, error)
+	Check(args *arguments) (string, error)
 }
