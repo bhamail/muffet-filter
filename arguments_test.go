@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/bradleyjkemp/cupaloy"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -45,4 +46,21 @@ func TestGetArgumentsErrorUnknownFlag(t *testing.T) {
 
 func TestHelp(t *testing.T) {
 	cupaloy.SnapshotT(t, help())
+}
+func TestGetUserHomeDir(t *testing.T) {
+	homeDir, err := getUserHomeDir()
+	assert.Nil(t, err)
+	assert.NotNil(t, homeDir)
+}
+func TestGetUserHomeDirError(t *testing.T) {
+	// force error by removing expected env var
+	origHome := os.Getenv("HOME")
+	defer func() {
+		_ = os.Setenv("HOME", origHome)
+	}()
+	_ = os.Unsetenv("HOME")
+
+	homeDir, err := getUserHomeDir()
+	assert.EqualError(t, err, "$HOME is not defined")
+	assert.Equal(t, "", homeDir)
 }

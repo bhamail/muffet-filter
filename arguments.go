@@ -12,7 +12,7 @@ import (
 func getUserHomeDir() (dirName string, err error) {
 	dirName, err = os.UserHomeDir()
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 	}
 	return
 }
