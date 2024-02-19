@@ -16,6 +16,7 @@ type fakeMuffetExecutor struct {
 	options muffetOptions
 }
 
+//goland:noinspection GoUnusedParameter
 func (r *fakeMuffetExecutor) Check(args *arguments) (string, error) {
 	return "[]", nil
 }
