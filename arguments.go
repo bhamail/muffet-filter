@@ -27,6 +27,7 @@ func getDefaultIgnoresFile(prefix string) string {
 }
 
 type arguments struct {
+	MuffetPath  string `short:"m" long:"muffet-path" description:"Path to muffet executable"`
 	MuffetJson  string `short:"j" long:"input-json" description:"Path to muffet link check output file in json format"`
 	IgnoresJson string `short:"i" long:"ignores" description:"File containing url errors to ignore in json format. Defaults: .muffet-filter/ignores.json, ~/.muffet-filter/ignores.json"`
 	Verbose     bool   `short:"v" long:"verbose" description:"Show more output"`

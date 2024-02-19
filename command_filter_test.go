@@ -35,3 +35,11 @@ func TestCommandRun(t *testing.T) {
 
 	assert.True(t, ok)
 }
+func TestGetMuffet(t *testing.T) {
+	muffetPath, err := newTestCommand(
+		newFakeMuffetFactory("hello", nil),
+	).getMuffet(&arguments{})
+
+	assert.Nil(t, err)
+	assert.Equal(t, "", muffetPath)
+}

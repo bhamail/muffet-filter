@@ -28,6 +28,8 @@ type realMuffetExecutor struct {
 }
 
 func (r *realMuffetExecutor) Check(args *arguments) (string, error) {
+	// todo write: depend on muffet exec, or write findMuffetExecutable()
+	//muffetPath := getMuffetPath()
 	cmd := exec.Command("/Users/bhamail/sonatype/sasq/link-checker/muffet/muffet", r.options.arguments...)
 	cmdStdOut, err := cmd.StdoutPipe()
 	cmdStdErr, err := cmd.StderrPipe()
