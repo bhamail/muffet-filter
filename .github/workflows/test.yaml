@@ -1,0 +1,27 @@
+name: test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: go build
+      - uses: golangci/golangci-lint-action@v3
+      - run: go test -race -covermode atomic -coverprofile coverage.txt
+      - uses: codecov/codecov-action@v3
+  spell_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: streetsidesoftware/cspell-action@v5
+        with:
+          files: "**/*.{md,go}"
+  readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: raviqqe/markdown-link-check@main
