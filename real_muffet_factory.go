@@ -28,20 +28,35 @@ type realMuffetExecutor struct {
 }
 
 func (r *realMuffetExecutor) Check(args *arguments) (string, error) {
-	// todo write: depend on muffet exec, or write findMuffetExecutable()
-	//muffetPath := getMuffetPath()
-	cmd := exec.Command("/Users/bhamail/sonatype/sasq/link-checker/muffet/muffet", r.options.arguments...)
+	isDownloaded, muffetPath, err := getMuffet(args)
+	// todo Decide if we want to delete the downloaded executable here, maybe add a flag?
+	/*
+		if isDownloaded {
+			defer func() {
+				_ = os.Remove(muffetPath)
+			}()
+		}
+	*/
+	if isDownloaded {
+		log.Println("muffet was downloaded to: " + muffetPath)
+	}
+
+	cmd := exec.Command(muffetPath, r.options.arguments...)
 	cmdStdOut, err := cmd.StdoutPipe()
-	cmdStdErr, err := cmd.StderrPipe()
 	defer func(cmdStdOut io.ReadCloser) {
 		_ = cmdStdOut.Close()
 	}(cmdStdOut)
+	if err != nil {
+		log.Fatalf("command failed with %s\n", err)
+	}
+	cmdStdErr, err := cmd.StderrPipe()
 	defer func(cmdStdErr io.ReadCloser) {
 		_ = cmdStdErr.Close()
 	}(cmdStdErr)
 	if err != nil {
 		log.Fatalf("command failed with %s\n", err)
 	}
+
 	stdoutReader := bufio.NewReader(cmdStdOut)
 	stderrReader := bufio.NewReader(cmdStdErr)
 	err = cmd.Start()

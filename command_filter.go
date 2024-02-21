@@ -6,7 +6,6 @@ import (
 	"github.com/logrusorgru/aurora/v3"
 	"io"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -18,50 +17,6 @@ type commandFilter struct {
 
 func newCommandFilter(stdout, stderr io.Writer, terminal bool, f muffetFactory) *commandFilter {
 	return &commandFilter{stdout, stderr, terminal, f}
-}
-
-func (c *commandFilter) getMuffet(args *arguments) (muffetPath string, err error) {
-	var muffetExec string
-	if args.MuffetPath != "" {
-		muffetExec = args.MuffetPath
-		var itExists bool
-		if itExists, err = doesFileExist(muffetExec); !itExists {
-			// a non-default file was specified, so it is an error if that specified file is missing
-			return
-		}
-	}
-
-	// fetch muffet if not on path
-	cmd := exec.Command("muffet", "--version")
-	err = cmd.Start()
-	if err != nil {
-		if err.Error() == "exec: \"muffet\": executable file not found in $PATH" {
-			// try to fetch muffet to local temp dir
-			// todo Install muffet
-			/*
-				# Install muffet if needed
-				if ! hash muffet &> /dev/null; then
-
-				if [ "${MUFFET_VERSION}" = "latest" ]; then
-				MUFFET_URL=$(wget -qO- https://api.github.com/repos/raviqqe/muffet/releases/latest | grep "browser_download_url.*muffet_linux_amd64.tar.gz" | cut -d \" -f 4)
-				else
-				MUFFET_URL="https://github.com/raviqqe/muffet/releases/download/v${MUFFET_VERSION}/muffet_linux_amd64.tar.gz"
-				fi
-
-				wget -qO- "${MUFFET_URL}" | $sudo_cmd tar xzf - -C /usr/local/bin/ muffet
-				fi
-			*/
-			cmd = exec.Command("go", "install", "muffet@latest")
-			err = cmd.Start()
-			if err != nil {
-				return
-			}
-		}
-	} else {
-		muffetPath = cmd.Path
-	}
-
-	return
 }
 
 func (c *commandFilter) Run(args []string) bool {
