@@ -104,7 +104,7 @@ func (r *realMuffetExecutor) Check(args *arguments) (string, error) {
 	// we ignore exit code because failed links result in non-zero exit code
 	_ = cmd.Wait()
 	if args.Verbose {
-		fmt.Println(fmt.Sprintf("called muffet: %s, exit status: %d", cmd.Path, cmd.ProcessState.ExitCode()))
+		fmt.Printf("called muffet: %s, exit status: %d\n", cmd.Path, cmd.ProcessState.ExitCode())
 	}
 
 	return jsonReportOut, nil
