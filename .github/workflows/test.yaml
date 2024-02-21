@@ -13,7 +13,7 @@ jobs:
       - run: which go
       - run: go version
       - run: sudo apt-get update
-      - run: sudo apt-get apt-get install --only-upgrade golang
+      - run: sudo apt-get install --only-upgrade golang
       - run: which go
       - run: go version
       - run: go build
