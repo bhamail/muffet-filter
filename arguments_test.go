@@ -63,6 +63,6 @@ func TestGetUserHomeDirError(t *testing.T) {
 	_ = os.Unsetenv("HOME")
 
 	homeDir, err := getUserHomeDir()
-	assert.EqualError(t, err, "$HOME is not definedzzz")
+	assert.EqualError(t, err, "$HOME is not defined")
 	assert.Equal(t, "", homeDir)
 }

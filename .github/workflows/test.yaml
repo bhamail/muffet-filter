@@ -5,17 +5,17 @@ on:
       - main
   pull_request:
 jobs:
-  test-simple:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '>=1.21.0'
-      - run: which go
-      - run: go version
-      - run: go build
-      - run: go test ./...
+#  test-simple:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - uses: actions/setup-go@v5
+#        with:
+#          go-version: '>=1.21.0'
+#      - run: which go
+#      - run: go version
+#      - run: go build
+#      - run: go test ./...
   test:
     runs-on: ubuntu-latest
     steps:
