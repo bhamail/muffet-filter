@@ -57,7 +57,6 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 	}
 
 	// filter out matching errors
-	// todo Build this next
 	// load errorsToIgnore from on disk config and/or args
 	errorsToIgnore, err := loadIgnoreList(args)
 	if err != nil {
