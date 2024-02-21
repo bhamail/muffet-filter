@@ -10,8 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: go version
-      - run: sudo apt-get update
-      - run: sudo apt-get -y upgrade
+      - run: sudo apt update
+      - run: sudo apt -y install golang
       - run: go version
       - run: go build
       - run: go test ./...
