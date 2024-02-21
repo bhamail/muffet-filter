@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"runtime"
 	"strconv"
+	"strings"
 )
 
 func executeCommand(isVerbose bool, name string, options ...string) (textOut string, textErr string, exitCode int, err error) {
@@ -111,6 +112,9 @@ func getMuffet(args *arguments) (isDownloaded bool, muffetPath string, err error
 			// see if we've already downloaded the executable to the temp dir
 			extractedExecutableName := getExtractedExecutableName(muffetExecutableBaseName)
 			tempDir := os.TempDir()
+			if !strings.HasSuffix(tempDir, "/") {
+				tempDir = tempDir + "/"
+			}
 			muffetPath = tempDir + extractedExecutableName
 			var itExists bool
 			if itExists, err = doesFileExist(muffetPath); itExists {
