@@ -182,6 +182,7 @@ func loadIgnoreList(args *arguments) (ignoreUrlErrors []UrlErrorLink, err error)
 		}
 	} else {
 		// next, we look for ignores file in the current working directory
+		// TODO add ignore file to https://bhamail.github.io/picapsule/ project and CI
 		pwd, _ := os.Getwd()
 		ignoreListFile = getDefaultIgnoresFile(pwd)
 		var itExists bool
