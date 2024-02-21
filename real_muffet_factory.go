@@ -28,7 +28,7 @@ type realMuffetExecutor struct {
 }
 
 func (r *realMuffetExecutor) Check(args *arguments) (string, error) {
-	isDownloaded, muffetPath, err := getMuffet(args)
+	isDownloaded, muffetPath, _ := getMuffet(args)
 	// todo Decide if we want to delete the downloaded executable here, maybe add a flag?
 	/*
 		if isDownloaded {
@@ -41,6 +41,7 @@ func (r *realMuffetExecutor) Check(args *arguments) (string, error) {
 		log.Println("muffet was downloaded to: " + muffetPath)
 	}
 
+	// todo Replace this with call to: executeCommand(args.Verbose, ...) ?
 	cmd := exec.Command(muffetPath, r.options.arguments...)
 	cmdStdOut, err := cmd.StdoutPipe()
 	defer func(cmdStdOut io.ReadCloser) {

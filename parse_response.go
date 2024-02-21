@@ -185,7 +185,7 @@ func loadIgnoreList(args *arguments) (ignoreUrlErrors []UrlErrorLink, err error)
 		pwd, _ := os.Getwd()
 		ignoreListFile = getDefaultIgnoresFile(pwd)
 		var itExists bool
-		if itExists, err = doesFileExist(ignoreListFile); !itExists {
+		if itExists, _ = doesFileExist(ignoreListFile); !itExists {
 			// check user home dir for ignores file
 			homeDir, _ := getUserHomeDir()
 			ignoreListFile = getDefaultIgnoresFile(homeDir)
