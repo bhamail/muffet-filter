@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: ls -alh /usr/local/go
       - run: which go
       - run: go version
       - run: sudo apt-get update
