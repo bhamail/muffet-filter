@@ -47,7 +47,7 @@ func TestGetMuffetMuffetPathInvalid(t *testing.T) {
 	assert.False(t, isDownloaded)
 }
 func TestGetMuffetMuffetPathValid(t *testing.T) {
-	origTempMuffet := os.TempDir() + getExtractedExecutableName(muffetExecutableBaseName)
+	origTempMuffet := getTempDirWTrailingSlash() + getExtractedExecutableName(muffetExecutableBaseName)
 	tempMuffetAlreadyExists, _ := doesFileExist(origTempMuffet)
 	if !tempMuffetAlreadyExists {
 		// download muffet executable
