@@ -327,6 +327,7 @@ func TestReportFilterTwoErrorMatch(t *testing.T) {
 	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
 	assert.Equal(t, keptErrLink, reportFiltered.UrlsToCheck[0].Links[0])
 	assert.Equal(t, keptErrLink, report.UrlsToCheck[0].Links[1])
+	assert.Nil(t, err)
 }
 func TestReportFilterErrorMatchAndSuccessLink(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
