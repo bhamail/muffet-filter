@@ -124,22 +124,9 @@ func getMuffet(args *arguments) (isDownloaded bool, muffetPath string, err error
 				return
 			}
 
-			// try to fetch muffet to local temp dir
+			// fetch muffet to local temp dir
 
-			/* from git: https://github.com/ruzickap/action-my-broken-link-checker
-
-			# Install muffet if needed
-			if ! hash muffet &> /dev/null; then
-
-			if [ "${MUFFET_VERSION}" = "latest" ]; then
-			MUFFET_URL=$(wget -qO- https://api.github.com/repos/raviqqe/muffet/releases/latest | grep "browser_download_url.*muffet_linux_amd64.tar.gz" | cut -d \" -f 4)
-			else
-			MUFFET_URL="https://github.com/raviqqe/muffet/releases/download/v${MUFFET_VERSION}/muffet_linux_amd64.tar.gz"
-			fi
-
-			wget -qO- "${MUFFET_URL}" | $sudo_cmd tar xzf - -C /usr/local/bin/ muffet
-			fi
-			*/
+			// reviewed logic from: https://github.com/ruzickap/action-my-broken-link-checker/blob/main/entrypoint.sh#L67
 
 			// get latest muffet release via GitHub API
 			var textOut, textErr string

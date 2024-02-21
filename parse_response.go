@@ -57,6 +57,7 @@ type Report struct {
 	UrlsToCheck []UrlToCheck
 }
 
+//goland:noinspection SpellCheckingInspection
 type parseResponse struct {
 	rawdata string
 }
