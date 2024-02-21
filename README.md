@@ -12,6 +12,8 @@ Wash, rinse, repeat until all links are either fixed, or ignored.
 
 Then setup `muffet-filter` to run as part of your nightly CI job.
 
+[CLI Help](.snapshots/TestHelp)
+
 TODO:
 * Investigate use of [lychee](https://github.com/lycheeverse/lychee)
 
