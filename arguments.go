@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"github.com/jessevdk/go-flags"
 	"log"
@@ -45,7 +44,7 @@ func getArguments(ss []string) (*arguments, error) {
 	} else if args.Version || args.Help {
 		return &args, nil
 	} else if len(ss) != 1 {
-		return nil, errors.New(fmt.Sprintf("invalid number of arguments\n\n" + help()))
+		return nil, fmt.Errorf("invalid number of arguments\n\n" + help())
 	}
 
 	args.URL = ss[0]

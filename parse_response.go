@@ -9,7 +9,7 @@ import (
 )
 
 func newErrorForMissingField(fieldName, theStruct interface{}) error {
-	return errors.New(fmt.Sprintf("missing required field: '%s' for type: %s, %+v", fieldName, reflect.TypeOf(theStruct).Name(), theStruct))
+	return fmt.Errorf("missing required field: '%s' for type: %s, %+v", fieldName, reflect.TypeOf(theStruct).Name(), theStruct)
 }
 
 type UrlSuccessLink struct {
@@ -139,7 +139,7 @@ func (rep *Report) filter(errorsToIgnore []UrlErrorLink, isVerbose bool) (filter
 				// maybe later we could decide to add a "quiet" mode, where success links get removed
 				tempUrlToCheck.Links = append(tempUrlToCheck.Links, link)
 			default:
-				err = errors.New(fmt.Sprintf("I don't know about type %T!\n", v))
+				err = fmt.Errorf("I don't know about type %T!\n", v)
 				return
 			}
 		}

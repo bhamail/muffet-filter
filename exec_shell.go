@@ -84,7 +84,7 @@ func executeCommand(isVerbose bool, name string, options ...string) (textOut str
 	err = cmd.Wait()
 	exitCode = cmd.ProcessState.ExitCode()
 	if isVerbose {
-		fmt.Println(fmt.Sprintf("exec: %s, args: %s, exit status: %d", cmd.Path, cmd.Args, exitCode))
+		fmt.Printf("exec: %s, args: %s, exit status: %d\n", cmd.Path, cmd.Args, exitCode)
 	}
 	return
 }

@@ -75,7 +75,6 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 		}
 		_, _ = os.Stdout.Write(prettyJson)
 		fmt.Println()
-		//fmt.Printf("%v\n", report)
 		return false, nil
 	}
 
