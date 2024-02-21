@@ -9,9 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: which go
       - run: go version
       - run: sudo apt-get update
-      - run: sudo apt-get -y install golang=1.21
+      - run: sudo apt-get upgrade golang
+      - run: which go
       - run: go version
       - run: go build
       - run: go test ./...
