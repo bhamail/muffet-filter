@@ -11,3 +11,6 @@ Typical usage is to run `muffet-filter`, and copy and paste selected URL's into 
 Wash, rinse, repeat until all links are either fixed, or ignored.
 
 Then setup `muffet-filter` to run as part of your nightly CI job.
+
+TODO:
+* Investigate use of [lychee](https://github.com/lycheeverse/lychee)
