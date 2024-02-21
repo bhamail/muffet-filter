@@ -14,3 +14,11 @@ Then setup `muffet-filter` to run as part of your nightly CI job.
 
 TODO:
 * Investigate use of [lychee](https://github.com/lycheeverse/lychee)
+
+Dev Notes:
+---------
+Local test command:
+
+```shell
+./muffet-filter -i testdata/urlErrorIgnore.json https://bhamail.github.io/picapsule/
+```
