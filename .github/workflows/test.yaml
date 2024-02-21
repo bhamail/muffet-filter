@@ -9,11 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: ls -alh /usr/local/go
-      - run: which go
-      - run: go version
-      - run: sudo apt-get update
-      - run: sudo apt-get install --only-upgrade golang
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '>=1.21.0'
       - run: which go
       - run: go version
       - run: go build
