@@ -114,7 +114,7 @@ func getMuffet(args *arguments) (isDownloaded bool, muffetPath string, err error
 			tempDir := getTempDirWTrailingSlash()
 			muffetPath = tempDir + extractedExecutableName
 			var itExists bool
-			if itExists, err = doesFileExist(muffetPath); itExists {
+			if itExists, _ = doesFileExist(muffetPath); itExists {
 				// show muffet version of found temp file
 				var versionOut string
 				versionOut, _, _, err = executeCommand(args.Verbose, muffetPath, "--version")
