@@ -3,7 +3,7 @@ muffet-filter
 
 [![CI build](https://github.com/bhamail/muffet-filter/actions/workflows/test.yaml/badge.svg)](https://github.com/bhamail/muffet-filter/actions)
 
-Uses [muffet](https://github.com/raviqqe/muffet) to check a web site for broken links and ignore known failures.
+Uses [muffet](https://github.com/raviqqe/muffet) to check a website for broken links and ignore known failures.
 
 `muffet-filter` allows you to create a file (`.muffet-filter/ignores.json`) containing link errors to be ignored.
 
