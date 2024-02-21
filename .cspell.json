@@ -5,6 +5,7 @@
     "nolint",
     "logrusorgru",
     "goland",
+    "stretchr",
     "rawdata"
   ]
 }
