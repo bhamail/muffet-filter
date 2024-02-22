@@ -1,0 +1,17 @@
+name: release
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: tools/release.sh
+        env:
+          GIT_USER: ${{ secrets.GIT_USER }}
+          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
