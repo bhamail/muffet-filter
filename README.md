@@ -24,3 +24,4 @@ Local test command:
 ```shell
 ./muffet-filter -i testdata/urlErrorIgnore.json https://bhamail.github.io/picapsule/
 ```
+
