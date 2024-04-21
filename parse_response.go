@@ -62,7 +62,7 @@ type parseResponse struct {
 	rawdata string
 }
 
-func (r *parseResponse) loadReport() (report Report, err error) {
+func (r *parseResponse) loadReport(args *arguments) (report Report, err error) {
 
 	var raw []json.RawMessage
 	if err = json.Unmarshal([]byte(r.rawdata), &raw); err != nil {
@@ -106,6 +106,10 @@ func (r *parseResponse) loadReport() (report Report, err error) {
 				if err = json.Unmarshal(jsonLink, &urlErrorLink); err == nil {
 					// make sure required fields exist in the ErrorLink
 					if err = urlErrorLink.validate(); err != nil {
+						if args.Verbose {
+							fmt.Printf("invalid error returned from muffet: %s, urlToCheck: %s\n", jsonLink, urlToCheck)
+						}
+
 						return
 					}
 

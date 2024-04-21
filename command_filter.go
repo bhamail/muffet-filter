@@ -51,7 +51,7 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 
 	// read json file into struct
 	parseReport := parseResponse{jsonReport}
-	report, err := parseReport.loadReport()
+	report, err := parseReport.loadReport(args)
 	if err != nil {
 		return false, err
 	}
