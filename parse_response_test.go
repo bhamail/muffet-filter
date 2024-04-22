@@ -10,13 +10,13 @@ import (
 
 func TestLoadReportBlankIsError(t *testing.T) {
 	resp := parseResponse{""}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Error(t, err)
 	assert.Equal(t, Report{}, report)
 }
 func TestLoadReportEmpty(t *testing.T) {
 	resp := parseResponse{"{}"}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Error(t, err)
 	assert.Equal(t, Report{}, report)
 }
@@ -103,27 +103,27 @@ func TestLoadReportErrorLinkValue(t *testing.T) {
     ]
   }]`
 	resp := parseResponse{jsonUrlErrorLInkBadVal}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.EqualError(t, err, "missing required field: 'Url' for type: UrlErrorLink, {Url: Error:}")
 	assert.Equal(t, Report{}, report)
 }
 func TestLoadReportOneError(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Nil(t, err)
 	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlToCheckError}}, report)
 }
 
 func TestLoadReportErrorParsingUrlToCheck(t *testing.T) {
 	resp := parseResponse{`[{"url":9}]`}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.EqualError(t, err, "json: cannot unmarshal number into Go struct field UrlToCheck.url of type string")
 	assert.Equal(t, Report{}, report)
 }
 
 func TestLoadReportEmptyLinks(t *testing.T) {
 	resp := parseResponse{`[{"url":"myUrl", "links": [{}]}]`}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.EqualError(t, err, newErrorForMissingField("Url", UrlErrorLink{}).Error())
 	assert.Equal(t, Report{}, report)
 }
@@ -156,7 +156,7 @@ func loadTestReportFromFile(t *testing.T, filePath string) (error, Report) {
 	bigReport := string(fileContent)
 
 	resp := parseResponse{bigReport}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	return err, report
 }
 
@@ -196,7 +196,7 @@ var expectedFirstUrlSuccessToCheck = UrlToCheck{
 
 func TestLoadReportOneSuccess(t *testing.T) {
 	resp := parseResponse{jsonReportOneSuccess}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Nil(t, err)
 	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{expectedFirstUrlSuccessToCheck}}, report)
 }
@@ -292,7 +292,7 @@ func TestLoadIgnoreListInvalidDefault(t *testing.T) {
 
 func TestReportFilterOneErrorNoMatch(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Nil(t, err)
 
 	reportFiltered, err := report.filter(nil, false)
@@ -303,7 +303,7 @@ func TestReportFilterOneErrorNoMatch(t *testing.T) {
 }
 func TestReportFilterOneErrorMatch(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Nil(t, err)
 
 	reportFiltered, err := report.filter([]UrlErrorLink{
@@ -315,7 +315,7 @@ func TestReportFilterOneErrorMatch(t *testing.T) {
 }
 func TestReportFilterTwoErrorMatch(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Nil(t, err)
 
 	keptErrLink := UrlErrorLink{"urlNoMatch", "errorNoMatch"}
@@ -331,7 +331,7 @@ func TestReportFilterTwoErrorMatch(t *testing.T) {
 }
 func TestReportFilterErrorMatchAndSuccessLink(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Nil(t, err)
 
 	keptSuccessLink := UrlSuccessLink{"urlSuccess", 200}
@@ -347,7 +347,7 @@ func TestReportFilterErrorMatchAndSuccessLink(t *testing.T) {
 }
 func TestReportFilterUnknownLinkInterface(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
-	report, err := resp.loadReport()
+	report, err := resp.loadReport(&arguments{})
 	assert.Nil(t, err)
 
 	unknownLinkType := "unknown type"
