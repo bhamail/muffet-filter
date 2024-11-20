@@ -44,7 +44,7 @@ func getArguments(ss []string) (*arguments, error) {
 	} else if args.Version || args.Help {
 		return &args, nil
 	} else if len(ss) != 1 {
-		return nil, fmt.Errorf("invalid number of arguments\n\n" + help())
+		return nil, fmt.Errorf("invalid number of arguments\n\n%s", help())
 	}
 
 	args.URL = ss[0]
