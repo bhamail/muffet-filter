@@ -25,3 +25,12 @@ Local test command:
 ./muffet-filter -i testdata/urlErrorIgnore.json https://bhamail.github.io/picapsule/
 ```
 
+Release Process
+---------------
+To release a new version, create a new tag with a sematic version and push it to the repo. The CI will automatically build and publish the new version.
+The file: [./configuration.go](./configuration.go) shows the current version number.
+
+```shell
+git tag -a v0.0.1 -m "Release 0.0.1"
+git push origin v0.0.1
+```
