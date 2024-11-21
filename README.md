@@ -34,3 +34,5 @@ The file: [./configuration.go](./configuration.go) shows the current version num
 git tag -a v0.0.1 -m "Release 0.0.1"
 git push origin v0.0.1
 ```
+
+See [GoReleaser](https://goreleaser.com/quick-start/) for more details.
