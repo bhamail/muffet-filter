@@ -12,7 +12,7 @@ Wash, rinse, repeat until all links are either fixed, or ignored.
 
 Then setup `muffet-filter` to run as part of your nightly CI job.
 
-The easiet way to get started is to copy the muffet-filter wrapper directory and script: [.muffet-filter/mfw](.muffet-filter/mfw) 
+The easiest way to get started is to copy the muffet-filter wrapper directory and script: [.muffet-filter/mfw](.muffet-filter/mfw) 
 into your project, and execute that script in your CI build. See this [example](https://github.com/bhamail/picapsule/blob/c032e40186ee3c7a679d78deb83f88932d689aef/.github/workflows/link-check.yaml#L13-L13).
 
 [CLI Help](.snapshots/TestHelp)
