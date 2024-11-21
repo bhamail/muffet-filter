@@ -229,6 +229,16 @@ func TestUrlErrorIsMatch(t *testing.T) {
 	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "b"}))
 }
 
+func TestUrlErrorIsMatchPattern(t *testing.T) {
+	errLink := UrlErrorLink{"a", "abcdefg"}
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "abc.*"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "abc.*fg"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", ".*fg"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", ".*"}))
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"a", "z.*"}))
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"a", ".*z"}))
+}
+
 func TestLoadIgnoreListFromTestdata(t *testing.T) {
 	args := arguments{IgnoresJson: "testdata/urlErrorIgnore.json"}
 	ignores, err := loadIgnoreList(&args)
@@ -324,6 +334,7 @@ func TestReportFilterTwoErrorMatch(t *testing.T) {
 	reportFiltered, err := report.filter([]UrlErrorLink{
 		{Url: "https://help.sonatype.com/index.html#content-wrapper", Error: "id #content-wrapper not found"},
 	}, false)
+	//goland:noinspection GoDfaErrorMayBeNotNil
 	assert.Equal(t, 1, len(reportFiltered.UrlsToCheck[0].Links))
 	assert.Equal(t, keptErrLink, reportFiltered.UrlsToCheck[0].Links[0])
 	assert.Equal(t, keptErrLink, report.UrlsToCheck[0].Links[1])

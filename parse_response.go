@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"regexp"
 )
 
 func newErrorForMissingField(fieldName, theStruct interface{}) error {
@@ -32,9 +33,15 @@ type UrlErrorLink struct {
 	Error string `json:"error"`
 }
 
-func (errorLink *UrlErrorLink) isMatch(link UrlErrorLink) bool {
-	if (errorLink.Url == link.Url) && (errorLink.Error == link.Error) {
-		return true
+func (errorLink *UrlErrorLink) isMatch(linkPatternToIgnore UrlErrorLink) bool {
+	if errorLink.Url == linkPatternToIgnore.Url {
+		if errorLink.Error == linkPatternToIgnore.Error {
+			return true
+		}
+		match, _ := regexp.MatchString(linkPatternToIgnore.Error, errorLink.Error)
+		if match {
+			return true
+		}
 	}
 	return false
 }
