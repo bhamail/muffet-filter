@@ -24,4 +24,4 @@ jobs:
             echo "Missing muffet-filter wrapper file $WRAPPER. Download here: $PROJECT_URL" && exit 1
           fi
       - name: Run muffet filter wrapper
-        run: ./.muffet-filter/mfw -vvv https://github.com/bhamail/muffet-filter/
+        run: ./.muffet-filter/mfw -v https://github.com/bhamail/muffet-filter/
