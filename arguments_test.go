@@ -43,14 +43,14 @@ func TestGetArgumentsErrorArgsCount(t *testing.T) {
 }
 
 func TestGetArgumentsMuffetArg(t *testing.T) {
-	ss := []string{"--muffet-arg=--one-page-only", "--muffet-arg=--max-redirections=10",
+	ss := []string{"--muffet-arg=--one-page-only", "--muffet-arg=--max-connections-per-host=10",
 		"--muffet-arg=--verbose", "--muffet-arg=--verbose", "my-url"}
 
 	args, err := getArguments(ss)
 
 	assert.Nil(t, err)
 	assert.Equal(t, "--one-page-only", args.MuffetArg[0])
-	assert.Equal(t, "--max-redirections=10", args.MuffetArg[1])
+	assert.Equal(t, "--max-connections-per-host=10", args.MuffetArg[1])
 	assert.Equal(t, "--verbose", args.MuffetArg[2])
 	assert.Equal(t, "--verbose", args.MuffetArg[3])
 	assert.Equal(t, "my-url", args.URL)
