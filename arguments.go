@@ -26,18 +26,20 @@ func getDefaultIgnoresFile(prefix string) string {
 }
 
 type arguments struct {
-	MuffetPath  string `short:"m" long:"muffet-path" description:"Path to muffet executable"`
-	MuffetJson  string `short:"j" long:"input-json" description:"Path to muffet link check output file in json format"`
-	IgnoresJson string `short:"i" long:"ignores" description:"File containing url errors to ignore in json format. Defaults: .muffet-filter/ignores.json, ~/.muffet-filter/ignores.json"`
-	Verbose     bool   `short:"v" long:"verbose" description:"Show more output"`
-	Help        bool   `short:"h" long:"help" description:"Show this help"`
-	Version     bool   `long:"version" description:"Show version"`
+	MuffetPath  string   `short:"m" long:"muffet-path" description:"Path to muffet executable"`
+	MuffetJson  string   `short:"j" long:"input-json" description:"Path to muffet link check output file in json format"`
+	IgnoresJson string   `short:"i" long:"ignores" description:"File containing url errors to ignore in json format. Defaults: .muffet-filter/ignores.json, ~/.muffet-filter/ignores.json"`
+	Verbose     bool     `short:"v" long:"verbose" description:"Show more output"`
+	Help        bool     `short:"h" long:"help" description:"Show this help"`
+	Version     bool     `long:"version" description:"Show version"`
+	MuffetArg   []string `long:"muffet-arg" description:"Additional argument passed to muffet executable."`
 	URL         string
 }
 
 func getArguments(ss []string) (*arguments, error) {
 	args := arguments{}
-	ss, err := flags.NewParser(&args, flags.PassDoubleDash).ParseArgs(ss)
+	//ss, err := flags.NewParser(&args, flags.PassDoubleDash).ParseArgs(ss)
+	ss, err := flags.ParseArgs(&args, ss)
 
 	if err != nil {
 		return nil, err

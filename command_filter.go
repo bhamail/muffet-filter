@@ -42,6 +42,9 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 
 	// call muffet to generate json response
 	options := muffetOptions{arguments: defaultOptions}
+	if len(args.MuffetArg) != 0 {
+		options.arguments = append(options.arguments, args.MuffetArg...)
+	}
 	options.arguments = append(options.arguments, args.URL)
 	muffetExec := c.factory.Create(options)
 	jsonReport, err := muffetExec.Check(args)

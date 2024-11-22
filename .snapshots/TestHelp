@@ -10,4 +10,5 @@ Application Options:
   -v, --verbose      Show more output
   -h, --help         Show this help
       --version      Show version
+      --muffet-arg=  Additional argument passed to muffet executable.
 
