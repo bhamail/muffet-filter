@@ -24,6 +24,6 @@ jobs:
             echo "Missing muffet-filter wrapper file $WRAPPER. Download here: $PROJECT_URL" && exit 1
           fi
       - name: Run muffet filter wrapper
-        # TODO:Restore this after fixing the reported errors in the git site
+        # TODO:Restore this after fixing the reported errors in the git site, and delete cruft in testdata dir
 #        run: ./.muffet-filter/mfw --muffet-arg=--one-page-only https://github.com/bhamail/muffet-filter/
-        run: ./.muffet-filter/mfw --muffet-arg=--one-page-only https://github.com/bhamail/muffet-filter/blob/main/.snapshots/TestHelp
+        run: ./.muffet-filter/mfw -i ./testdata/ci-link-check-ignores.json --muffet-arg=--one-page-only https://github.com/bhamail/muffet-filter/blob/main/.snapshots/TestHelp
