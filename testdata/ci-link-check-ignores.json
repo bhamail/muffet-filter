@@ -2,5 +2,9 @@
   {
     "url": "https://github.githubassets.com/",
     "error": "404"
+  },
+  {
+    "url": "https://opengraph.githubassets.com/.*/bhamail/muffet-filter",
+    "error": "429"
   }
 ]
