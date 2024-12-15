@@ -41,6 +41,7 @@ func (errorLink *UrlErrorLink) isMatch(linkPatternToIgnore UrlErrorLink) bool {
 			return false
 		}
 	}
+	// if we got this far, the urls match, so now check the error message
 
 	if errorLink.Error == linkPatternToIgnore.Error {
 		return true
