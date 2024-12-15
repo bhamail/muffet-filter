@@ -34,15 +34,22 @@ type UrlErrorLink struct {
 }
 
 func (errorLink *UrlErrorLink) isMatch(linkPatternToIgnore UrlErrorLink) bool {
-	if errorLink.Url == linkPatternToIgnore.Url {
-		if errorLink.Error == linkPatternToIgnore.Error {
-			return true
-		}
-		match, _ := regexp.MatchString(linkPatternToIgnore.Error, errorLink.Error)
-		if match {
-			return true
+	if errorLink.Url != linkPatternToIgnore.Url {
+		// check for regex match on url
+		match, _ := regexp.MatchString(linkPatternToIgnore.Url, errorLink.Url)
+		if !match {
+			return false
 		}
 	}
+
+	if errorLink.Error == linkPatternToIgnore.Error {
+		return true
+	}
+	match, _ := regexp.MatchString(linkPatternToIgnore.Error, errorLink.Error)
+	if match {
+		return true
+	}
+
 	return false
 }
 

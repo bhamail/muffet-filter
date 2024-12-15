@@ -229,7 +229,7 @@ func TestUrlErrorIsMatch(t *testing.T) {
 	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "b"}))
 }
 
-func TestUrlErrorIsMatchPattern(t *testing.T) {
+func TestUrlErrorIsMatchPatternInErrorParam(t *testing.T) {
 	errLink := UrlErrorLink{"a", "abcdefg"}
 	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "abc.*"}))
 	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", "abc.*fg"}))
@@ -237,6 +237,20 @@ func TestUrlErrorIsMatchPattern(t *testing.T) {
 	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"a", ".*"}))
 	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"a", "z.*"}))
 	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"a", ".*z"}))
+}
+
+func TestUrlErrorIsMatchPatternInUrlParam(t *testing.T) {
+	errLink := UrlErrorLink{"abcdefg", "a"}
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"abc.*", "b"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"abc.*", "a"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"abc.*fg", "a"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{".*fg", "a"}))
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{".*", "a"}))
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{"z.*", "a"}))
+	assert.Equal(t, false, errLink.isMatch(UrlErrorLink{".*z", "a"}))
+
+	errLink = UrlErrorLink{"https://opengraph.githubassets.com/96821c40fa09d2c0291b5c2c275dbe3d4f912458cc7054645b6448156b75983d/bhamail/muffet-filter", "429"}
+	assert.Equal(t, true, errLink.isMatch(UrlErrorLink{"https://opengraph.githubassets.com/.*/bhamail/muffet-filter", "429"}))
 }
 
 func TestLoadIgnoreListFromTestdata(t *testing.T) {
