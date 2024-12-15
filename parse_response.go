@@ -47,11 +47,7 @@ func (errorLink *UrlErrorLink) isMatch(linkPatternToIgnore UrlErrorLink) bool {
 		return true
 	}
 	match, _ := regexp.MatchString(linkPatternToIgnore.Error, errorLink.Error)
-	if match {
-		return true
-	}
-
-	return false
+	return match
 }
 
 func (errorLink *UrlErrorLink) validate() error {
