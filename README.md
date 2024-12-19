@@ -17,6 +17,29 @@ into your project, and execute that script in your CI build. See this [example](
 
 [CLI Help](.snapshots/TestHelp)
 
+ignores.json syntax
+-------------------
+The `.muffet-filter/ignores.json` file is a JSON file containing a map of URL's and error messages to ignore. Both the
+URL and the error message support regular expression matching. Some example content is shown below. Another example is the
+testdata file [testdata/ci-link-check-ignores.json](testdata/ci-link-check-ignores.json).
+
+```json
+[
+  {
+    "url": "https://contribute.sonatype.com/js/ga.js",
+    "error": "404"
+  },
+  {
+    "url": "https://www.docker.com/products/docker-desktop",
+    "error": "403"
+  },
+  {
+    "url": "https://github.githubassets.com/",
+    "error": "404"
+  }
+]
+```
+
 TODO:
 * Investigate use of [lychee](https://github.com/lycheeverse/lychee)
 
