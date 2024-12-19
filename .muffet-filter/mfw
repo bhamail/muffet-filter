@@ -1,7 +1,6 @@
 #!/bin/sh
 # ----------------------------------------------------------------------------
 # muffet-filter wrapper
-# see: https://github.com/bhamail/muffet-filter
 # ----------------------------------------------------------------------------
 PROJECT_ORG="bhamail"
 PROJECT_NAME="muffet-filter"
