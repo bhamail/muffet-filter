@@ -6,5 +6,9 @@
   {
     "url": "https://opengraph.githubassets.com/.*/bhamail/muffet-filter",
     "error": "429"
+  },
+  {
+    "url": "https://github.com/features/copilot#enterprise",
+    "error": "id #enterprise not found"
   }
 ]
