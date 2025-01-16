@@ -7,6 +7,14 @@ import (
 	"github.com/mattn/go-isatty"
 )
 
+//goland:noinspection GoUnusedGlobalVariable
+var (
+	version   = "dev"
+	commit    = "none"
+	date      = "unknown"
+	agentName = "muffet-filter"
+)
+
 func main() {
 	ok := newCommandFilter(
 		colorable.NewColorableStdout(),
