@@ -36,7 +36,7 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 		c.print(help())
 		return true, nil
 	} else if args.Version {
-		c.print(agentName, " version \"", version, "\" ", date)
+		c.print(agentName, " version \"", version, "\" ", date, " (", commit, ")")
 		return true, nil
 	}
 
