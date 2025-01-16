@@ -45,14 +45,14 @@ Tips
 * Use the `--muffet-arg=-f` or `--muffet-arg=--ignore-fragments` option to ignore url fragments. This is useful when you
   have a lot of links that are auto-generated that do not render correctly during the muffet check, as can occur in
   anchor links in the README.md file at the root of a GitHub project. 
-  <!--- cslint:disable -->
+  <!--- cspell:disable -->
   For an example, see: [sonatype-nexus-community/contribute.sonatype.com/.github/workflows/link-check.yaml#L28](https://github.com/sonatype-nexus-community/contribute.sonatype.com/blob/3180d82898129c70f5329b68663a38f4e66259b1/.github/workflows/link-check.yaml#L28)
-  <!--- cslint:enable -->
+  <!--- cspell:enable -->
 
 * Use wild card patterns in the ignores file with `429` error codes to ignore rate limiting errors. 
-  <!--- cslint:disable -->
+  <!--- cspell:disable -->
   For an example, see: [sonatype-nexus-community/contribute.sonatype.com/.muffet-filter/ignores.json#L15](https://github.com/sonatype-nexus-community/contribute.sonatype.com/blob/fb97123c0d749445741d0f30656597bcb98dd60c/.muffet-filter/ignores.json#L15)
-  <!--- cslint:enable -->
+  <!--- cspell:enable -->
   
 TODO:
 * Investigate use of [lychee](https://github.com/lycheeverse/lychee)
