@@ -121,7 +121,15 @@ func (r *parseResponse) loadReport(args *arguments) (report Report, err error) {
 							fmt.Printf("invalid error returned from muffet: %s, urlToCheck: %s\n", jsonLink, urlToCheck)
 						}
 
-						return
+						if args.IgnoreEmptyErrUrl {
+							if urlErrorLink.Url == "" {
+								urlErrorLink.Url = "empty"
+								err = nil
+								continue
+							}
+						} else {
+							return
+						}
 					}
 
 					// replace link in report struct

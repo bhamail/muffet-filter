@@ -2,13 +2,16 @@ Usage:
   muffet-filter.test [options] <url>
 
 Application Options:
-  -m, --muffet-path= Path to muffet executable
-  -j, --input-json=  Path to muffet link check output file in json format
-  -i, --ignores=     File containing url errors to ignore in json format.
-                     Defaults: .muffet-filter/ignores.json,
-                     ~/.muffet-filter/ignores.json
-  -v, --verbose      Show more output
-  -h, --help         Show this help
-      --version      Show version
-      --muffet-arg=  Additional argument passed to muffet executable.
+  -m, --muffet-path=          Path to muffet executable
+  -j, --input-json=           Path to muffet link check output file in json
+                              format
+  -i, --ignores=              File containing url errors to ignore in json
+                              format. Defaults: .muffet-filter/ignores.json,
+                              ~/.muffet-filter/ignores.json
+  -v, --verbose               Show more output
+  -h, --help                  Show this help
+      --version               Show version
+      --muffet-arg=           Additional argument passed to muffet executable.
+      --ignore-empty-err-url  Ignore empty URL field in error links (only use
+                              for special cases)
 

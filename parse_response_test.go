@@ -107,6 +107,26 @@ func TestLoadReportErrorLinkValue(t *testing.T) {
 	assert.EqualError(t, err, "missing required field: 'Url' for type: UrlErrorLink, {Url: Error:}")
 	assert.Equal(t, Report{}, report)
 }
+func TestLoadReportErrorLinkValueEmptyUtl(t *testing.T) {
+	jsonUrlErrorLInkBadVal := `[{
+    "url": "bing",
+    "links": [
+      {
+        "url": "",
+        "error": "yadda"
+      }
+    ]
+  }]`
+	resp := parseResponse{jsonUrlErrorLInkBadVal}
+	report, err := resp.loadReport(&arguments{IgnoreEmptyErrUrl: true})
+	assert.Nil(t, err)
+	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{{
+		Url: "bing",
+		Links: []interface{}{
+			map[string]interface{}{"url": "", "error": "yadda"},
+		}},
+	}}, report)
+}
 func TestLoadReportOneError(t *testing.T) {
 	resp := parseResponse{jsonReportOneError}
 	report, err := resp.loadReport(&arguments{})
