@@ -123,7 +123,7 @@ func TestLoadReportErrorLinkValueEmptyUtl(t *testing.T) {
 	assert.Equal(t, Report{UrlsToCheck: []UrlToCheck{{
 		Url: "bing",
 		Links: []interface{}{
-			map[string]interface{}{"url": "", "error": "my_error_message"},
+			UrlErrorLink{Url: "empty", Error: "my_error_message"},
 		}},
 	}}, report)
 }

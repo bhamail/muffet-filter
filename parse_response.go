@@ -125,7 +125,7 @@ func (r *parseResponse) loadReport(args *arguments) (report Report, err error) {
 							if urlErrorLink.Url == "" {
 								urlErrorLink.Url = "empty"
 								err = nil
-								continue
+								// don't continue, allow replacement of link in report struct below
 							}
 						} else {
 							return
