@@ -10,5 +10,9 @@
   {
     "url": "https://github.com/features/copilot#enterprise",
     "error": "id #enterprise not found"
+  },
+  {
+    "url": "https://github.com/solutions/industry/healthcare",
+    "error": "timeout"
   }
 ]
