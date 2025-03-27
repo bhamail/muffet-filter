@@ -2,13 +2,17 @@ package main
 
 import (
 	"github.com/stretchr/testify/assert"
+	"io"
 	"os"
 	"strings"
 	"testing"
 )
 
 func TestCommandRun(t *testing.T) {
-	ok := newTestCommand(
+	ok := newCommandFilter(
+		io.Discard,
+		io.Discard,
+		false,
 		newFakeMuffetFactory("hello", nil),
 	).Run([]string{"https://foo.com"})
 
