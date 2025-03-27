@@ -42,6 +42,7 @@ func getArguments(ss []string) (*arguments, error) {
 	//ss, err := flags.NewParser(&args, flags.PassDoubleDash).ParseArgs(ss)
 	ss, err := flags.ParseArgs(&args, ss)
 
+	// TODO: Help arg parsing is borked. Check if replacing ParseArgs with NewParser fixes it.
 	if err != nil {
 		return nil, err
 	} else if args.Version || args.Help {
