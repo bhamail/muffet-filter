@@ -88,3 +88,18 @@ func TestGetUserHomeDirError(t *testing.T) {
 	assert.EqualError(t, err, "$HOME is not defined")
 	assert.Equal(t, "", homeDir)
 }
+
+func TestGetDefaultIgnoresFile(t *testing.T) {
+	ignoreFile := getDefaultIgnoresFile("/tmp")
+	assert.Equal(t, "/tmp/.muffet-filter/ignores.json", ignoreFile)
+}
+func TestGetDefaultIgnoresFilePrefixEmpty(t *testing.T) {
+	ignoreFile := getDefaultIgnoresFile("")
+	assert.Equal(t, "/.muffet-filter/ignores.json", ignoreFile)
+}
+
+func TestHelpFunc(t *testing.T) {
+	// not really sure why this method is needed
+	helpText := help()
+	assert.Contains(t, helpText, "[options] <url of website to check>")
+}
