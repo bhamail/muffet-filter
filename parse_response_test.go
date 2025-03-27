@@ -399,5 +399,5 @@ func TestReportFilterUnknownLinkInterface(t *testing.T) {
 	report.UrlsToCheck[0].Links = append(report.UrlsToCheck[0].Links, unknownLinkType)
 
 	_, err = report.filter(nil, false)
-	assert.EqualError(t, err, "I don't know about type string")
+	assert.EqualError(t, err, "unexpected url error type string")
 }

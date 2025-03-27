@@ -162,7 +162,7 @@ func (rep *Report) filter(errorsToIgnore []UrlErrorLink, isVerbose bool) (filter
 				// maybe later we could decide to add a "quiet" mode, where success links get removed
 				tempUrlToCheck.Links = append(tempUrlToCheck.Links, link)
 			default:
-				err = fmt.Errorf("I don't know about type %T", v)
+				err = fmt.Errorf("unexpected url error type %T", v)
 				return
 			}
 		}
