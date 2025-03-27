@@ -44,7 +44,7 @@ Tips
 ----
 * Use the `--muffet-arg=-f` or `--muffet-arg=--ignore-fragments` option to ignore url fragments. This is useful when you
   have a lot of links that are auto-generated that do not render correctly during the muffet check, as can occur in
-  anchor links in the README.md file at the root of a GitHub project. 
+  anchor links in the `README.md` file at the root of a GitHub project. 
   <!--- cspell:disable -->
   For an example, see: [sonatype-nexus-community/contribute.sonatype.com/.github/workflows/link-check.yaml#L28](https://github.com/sonatype-nexus-community/contribute.sonatype.com/blob/3180d82898129c70f5329b68663a38f4e66259b1/.github/workflows/link-check.yaml#L28)
   <!--- cspell:enable -->

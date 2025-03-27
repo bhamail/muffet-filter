@@ -58,7 +58,7 @@ func getArguments(ss []string) (*arguments, error) {
 
 func help() string {
 	p := flags.NewParser(&arguments{}, flags.PassDoubleDash)
-	p.Usage = "[options] <url>"
+	p.Usage = "[options] <url of website to check>"
 
 	// Parse() is run here to show default values in help.
 	// This seems to be a bug in go-flags. Was this fixed???

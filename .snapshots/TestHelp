@@ -1,5 +1,5 @@
 Usage:
-  muffet-filter.test [options] <url>
+  muffet-filter.test [options] <url of website to check>
 
 Application Options:
   -m, --muffet-path=          Path to muffet executable
