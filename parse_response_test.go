@@ -160,7 +160,7 @@ var expectedNearLast159UrlErrorToCheck = UrlToCheck{
 func TestLoadReportBigErrorsOnly(t *testing.T) {
 	// NOTE: This file was generated via muffet using:
 	// $ ./muffet --buffer-size=8192 --max-connections=10 --color=always --format=json https://help.sonatype.com  > reportErrorsOnly.json
-	err, report := loadTestReportFromFile(t, "testdata/reportErrorsOnly.json")
+	report, err := loadTestReportFromFile(t, "testdata/reportErrorsOnly.json")
 	assert.Nil(t, err)
 
 	assert.NotNil(t, report)
@@ -169,7 +169,7 @@ func TestLoadReportBigErrorsOnly(t *testing.T) {
 	assert.Equal(t, expectedNearLast159UrlErrorToCheck, report.UrlsToCheck[159])
 }
 
-func loadTestReportFromFile(t *testing.T, filePath string) (error, Report) {
+func loadTestReportFromFile(t *testing.T, filePath string) (Report, error) {
 	fileContent, err := os.ReadFile(filePath)
 	assert.Nil(t, err)
 	// Convert []byte to string
@@ -177,7 +177,7 @@ func loadTestReportFromFile(t *testing.T, filePath string) (error, Report) {
 
 	resp := parseResponse{bigReport}
 	report, err := resp.loadReport(&arguments{})
-	return err, report
+	return report, err
 }
 
 const jsonUrlSuccessLInk = `{
@@ -222,7 +222,7 @@ func TestLoadReportOneSuccess(t *testing.T) {
 }
 
 func TestLoadReportBigSuccessOnly(t *testing.T) {
-	err, report := loadTestReportFromFile(t, "testdata/reportSuccessOnly.json")
+	report, err := loadTestReportFromFile(t, "testdata/reportSuccessOnly.json")
 	assert.Nil(t, err)
 
 	assert.NotNil(t, report)
@@ -231,7 +231,7 @@ func TestLoadReportBigSuccessOnly(t *testing.T) {
 	assert.Equal(t, "https://www.google.com/", report.UrlsToCheck[0].Url)
 }
 func TestLoadReportBigSuccessAndError(t *testing.T) {
-	err, report := loadTestReportFromFile(t, "testdata/reportSuccessAndError.json")
+	report, err := loadTestReportFromFile(t, "testdata/reportSuccessAndError.json")
 	assert.Nil(t, err)
 
 	assert.NotNil(t, report)
@@ -399,5 +399,5 @@ func TestReportFilterUnknownLinkInterface(t *testing.T) {
 	report.UrlsToCheck[0].Links = append(report.UrlsToCheck[0].Links, unknownLinkType)
 
 	_, err = report.filter(nil, false)
-	assert.EqualError(t, err, "I don't know about type string!\n")
+	assert.EqualError(t, err, "unexpected url error type string")
 }
