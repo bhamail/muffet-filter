@@ -60,8 +60,8 @@ func help() string {
 	p.Usage = "[options] <url>"
 
 	// Parse() is run here to show default values in help.
-	// This seems to be a bug in go-flags.
-	_, _ = p.Parse() // nolint:errcheck
+	// This seems to be a bug in go-flags. Was this fixed???
+	//_, _ = p.Parse() // nolint:errcheck
 
 	b := &bytes.Buffer{}
 	p.WriteHelp(b)

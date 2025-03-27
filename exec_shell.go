@@ -121,7 +121,7 @@ func getMuffet(args *arguments) (isDownloaded bool, muffetPath string, err error
 				if err != nil {
 					return
 				}
-				log.Printf("using muffet: %s, version: %s", muffetPath, versionOut)
+				log.Printf("using cached muffet: %s, version: %s", muffetPath, versionOut)
 				return
 			}
 
