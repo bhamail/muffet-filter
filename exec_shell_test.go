@@ -69,3 +69,12 @@ func TestGetMuffetMuffetPathValid(t *testing.T) {
 	assert.Equal(t, origTempMuffet, muffetPath)
 	assert.False(t, isDownloaded)
 }
+
+func TestGetDefaultIgnoresFile(t *testing.T) {
+	ignoreFile := getDefaultIgnoresFile("/tmp")
+	assert.Equal(t, "/tmp/.muffet-filter/ignores.json", ignoreFile)
+}
+func TestGetDefaultIgnoresFilePrefixEmpty(t *testing.T) {
+	ignoreFile := getDefaultIgnoresFile("")
+	assert.Equal(t, "/.muffet-filter/ignores.json", ignoreFile)
+}
