@@ -2,6 +2,7 @@ muffet-filter
 =============
 
 [![CI build](https://github.com/bhamail/muffet-filter/actions/workflows/test.yaml/badge.svg)](https://github.com/bhamail/muffet-filter/actions)
+[![codecov](https://codecov.io/gh/bhamail/muffet-filter/graph/badge.svg?token=BPDQ1H9EIF)](https://codecov.io/gh/bhamail/muffet-filter)
 
 Uses [muffet](https://github.com/raviqqe/muffet) to check a website for broken links and ignore known failures.
 
