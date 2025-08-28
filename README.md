@@ -68,7 +68,7 @@ Local test command:
 
 Release Process
 ---------------
-To release a new version, create a new tag with a sematic version and push it to the repo. 
+To release a new version, create a new tag with a semantic version and push it to the repo. 
 CI will automatically build and publish the new version.
 
 ```shell
