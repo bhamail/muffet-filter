@@ -156,7 +156,19 @@ func getMuffet(args *arguments) (isDownloaded bool, muffetPath string, err error
 			}
 
 			// download to temp directory
-			textOut, textErr, exitCode, err = executeCommand(args.Verbose, "wget", "--no-verbose", "--directory-prefix="+tempDir, latestVersionUrl)
+
+			// check for wget
+			foundWget, _ := hasWget()
+			if !foundWget {
+				textErr = fmt.Sprintf("could not find %s on path. perhaps you need to install wget.", commandWGet)
+				textOut = textErr
+				exitCode = -1
+				err = errors.New(textErr)
+				printCommandResults(textOut, textErr, exitCode)
+				return
+			}
+
+			textOut, textErr, exitCode, err = executeCommand(args.Verbose, commandWGet, "--no-verbose", "--directory-prefix="+tempDir, latestVersionUrl)
 			if err != nil {
 				printCommandResults(textOut, textErr, exitCode)
 				return
@@ -193,6 +205,16 @@ func getMuffet(args *arguments) (isDownloaded bool, muffetPath string, err error
 	}
 
 	return
+}
+
+const commandWGet = "wget"
+
+func hasWget() (bool, string) {
+	path, err := exec.LookPath(commandWGet)
+	if err != nil {
+		return false, ""
+	}
+	return true, path
 }
 
 func getTempDirWTrailingSlash() string {
