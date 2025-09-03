@@ -18,5 +18,9 @@
   {
     "url": "https://github.githubassets.com/assets/ui_packages_code-view-shared_hooks_use-canonical-object_ts-ui_packages_code-view-shared_hooks-a6859a-7f1d3d7e0c1a.js",
     "error": "error when dialing*"
+  },
+  {
+    "url": "https://github.com/marketplace",
+    "error": "400"
   }
 ]
