@@ -37,6 +37,7 @@ else
       i686)   ARCH_NAME="386" ;;
       x86_64) ARCH_NAME="amd64" ;;
       arm64)  ARCH_NAME="arm64" ;;
+      aarch64)ARCH_NAME="arm64" ;;
       arm)    dpkg --print-ARCH_NAME | grep -q "arm64" && ARCH_NAME="arm64" || ARCH_NAME="arm" ;;
   esac
   echo "os arch: $ARCH_NAME"
