@@ -43,6 +43,9 @@ testdata file [testdata/ci-link-check-ignores.json](testdata/ci-link-check-ignor
 
 Tips
 ----
+* For large sites, there may be memory issues, so try limiting the check to just one page initially by adding this 
+  argument: `--muffet-arg=--one-page-only`.
+
 * Use the `--muffet-arg=-f` or `--muffet-arg=--ignore-fragments` option to ignore url fragments. This is useful when you
   have a lot of links that are auto-generated that do not render correctly during the muffet check, as can occur in
   anchor links in the `README.md` file at the root of a GitHub project. 
