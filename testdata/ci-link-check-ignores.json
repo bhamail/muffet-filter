@@ -26,5 +26,9 @@
   {
     "url": "https://github.com/signup.*",
     "error": "429"
+  },
+  {
+    "url": "https://github.com/bhamail/muffet-filter/.*",
+    "error": "429"
   }
 ]
