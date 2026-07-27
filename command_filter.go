@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/logrusorgru/aurora/v3"
 	"io"
-	"os"
 	"strings"
 )
 
@@ -75,8 +74,8 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 		if err != nil {
 			return false, err
 		}
-		_, _ = os.Stdout.Write(prettyJson)
-		fmt.Println()
+		_, _ = c.stdout.Write(prettyJson)
+		fmt.Fprintln(c.stdout)
 		return false, nil
 	}
 

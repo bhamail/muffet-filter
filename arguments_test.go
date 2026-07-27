@@ -26,8 +26,9 @@ func TestGetArgumentsHelp(t *testing.T) {
 		{"-h"},
 		{"--help"},
 	} {
-		_, err := getArguments(ss)
-		assert.ErrorContains(t, err, "Application Options:\n  -m, --muffet-path=          Path to muffet executable\n")
+		args, err := getArguments(ss)
+		assert.Nil(t, err)
+		assert.True(t, args.Help)
 	}
 }
 

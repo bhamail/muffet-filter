@@ -39,19 +39,20 @@ type arguments struct {
 
 func getArguments(ss []string) (*arguments, error) {
 	args := arguments{}
-	//ss, err := flags.NewParser(&args, flags.PassDoubleDash).ParseArgs(ss)
-	ss, err := flags.ParseArgs(&args, ss)
+	p := flags.NewParser(&args, flags.PassDoubleDash)
+	remaining, err := p.ParseArgs(ss)
 
-	// TODO: Help arg parsing is borked. Check if replacing ParseArgs with NewParser fixes it.
 	if err != nil {
 		return nil, err
-	} else if args.Version || args.Help {
+	}
+
+	if args.Version || args.Help {
 		return &args, nil
-	} else if len(ss) != 1 {
+	} else if len(remaining) != 1 {
 		return nil, fmt.Errorf("invalid number of arguments\n\n%s", help())
 	}
 
-	args.URL = ss[0]
+	args.URL = remaining[0]
 
 	return &args, nil
 }
