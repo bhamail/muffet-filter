@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/logrusorgru/aurora/v3"
 	"io"
 	"strings"
+
+	"github.com/logrusorgru/aurora/v3"
 )
 
 type commandFilter struct {
@@ -75,7 +76,7 @@ func (c *commandFilter) runWithError(ss []string) (bool, error) {
 			return false, err
 		}
 		_, _ = c.stdout.Write(prettyJson)
-		fmt.Fprintln(c.stdout)
+		_, _ = fmt.Fprintln(c.stdout)
 		return false, nil
 	}
 
